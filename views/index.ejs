@@ -1,0 +1,44 @@
+<%- include header%>
+<div class="body">
+    <%- include nav%>
+    <div class="container">
+        <section  id="content" class="content">
+            <% _.forEach(articles, function(article){ %>
+            <div class="pad group">
+                <article class="format-image group">
+                    <h2 class="post-title pad">
+                        <a href="/"><%=article.title%></a>
+                    </h2>
+                    <div class="post-inner">
+                        <div class="post-deco">
+                            <div class="hex hex-small">
+                                <div class="hex-inner"><i class="fa"></i></div>
+                                <div class="corner-1"></div>
+                                <div class="corner-2"></div>
+                            </div>
+                        </div>
+                        <div class="post-content pad">
+                            <div class="entry custome">
+                                <%-article.content_mini%>
+                            </div>
+                            <a class="more-link-custom" href="/"><span><i>更多</i></span></a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <%});%>
+        </section>
+    </div>
+</div>
+<div class="wp-pagenavi">
+    <ul class="pagination">
+        <li class=" disabled">
+            <a href="https://jellybool.com/?page=1">Prev</a>
+        </li>
+
+        <li class="">
+            <a href="https://jellybool.com/?page=2">Next</a>
+        </li>
+    </ul>
+</div>
+<%- include bottom%>
