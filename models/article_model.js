@@ -3,6 +3,7 @@ var mongoose = require('../lib/mongoose'),
 	COLLECTION_NAME = 'articles',
 	autoIncrement = require('mongoose-auto-increment'),
 	_ = require('lodash'),
+	common = require('../common/common'),
 	hljs = require('highlight.js');
 
 var md = require('markdown-it')({
@@ -63,12 +64,12 @@ articleSchema.plugin(autoIncrement.plugin, {
 
 //文章内容 markdown->html
 articleSchema.virtual('content_display').get(function(){
-	return markdown.toHTML(this.content);
+	return md.render(this.content);
 });
 
 //小标题
 articleSchema.virtual('content_mini').get(function(){
-	return md.render(this.content);
+	return common.removeHTMLTag(md.render(this.content)).substr(0, 30);
 });
 
 
