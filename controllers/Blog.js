@@ -1,6 +1,8 @@
 var _ = require('lodash'),
 	Article = require('./../models/article_model'),
-	trimBody = require('trim-body');
+	trimBody = require('trim-body'),
+	config = require('../config')
+	Seq = require('seq');
 
 /**
  * 首页
@@ -8,12 +10,34 @@ var _ = require('lodash'),
  * @param res
  * @returns res->view
  */
-function index(req, res){
-	Article.Model.find({}, {aid: 1, title: 1, content: 1, _id : 0}, function(err, articles){
-		if(err) return res.renderError('服务器出错');
+function index(req, res) {
+	var query = req.query,
+		page = query.page || 1,
+		sort = {cts : -1},
+		perpage = page * config.perpage_limit,
+		skip = (page-1) * config.perpage_limit;
 
-		return res.render('index', {articles : articles});
-	});
+	new Seq()
+		.seq('count', function () {
+			Article.Model.count(this);
+		})
+		.seq(function () {
+			Article.Model.find().sort(sort).skip(skip).limit(config.perpage_limit).exec(this);
+		})
+		.seq(function (articles) {
+			var count = this.vars.count;
+
+			return res.render('index', {
+				articles : articles,
+				page     : page,
+				next     : (perpage >= count) ? true : false
+			});
+		})
+		.catch(function (err) {
+			return res.renderError({err : err});
+		})
+	;
+
 }
 
 /**

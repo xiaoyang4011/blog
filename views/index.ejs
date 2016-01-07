@@ -30,15 +30,34 @@
         </section>
     </div>
 </div>
-<div class="wp-pagenavi">
-    <ul class="pagination">
-        <li class=" disabled">
-            <a href="https://jellybool.com/?page=1">Prev</a>
-        </li>
-
-        <li class="">
-            <a href="https://jellybool.com/?page=2">Next</a>
-        </li>
+<nav>
+    <ul id="page" class="pager">
+        <li><a href="javascript:void(0);"  v-on:click="previous()">Previous</a></li>
+        <li><a href="javascript:void(0);"  v-on:click="next()">Next</a></li>
     </ul>
-</div>
+</nav>
+
+<script>
+    new Vue({
+       el: '#page',
+       data : {
+           page:<%=page%>,
+           is_next : <%=next%>
+       },
+       methods : {
+           previous : function(){
+                if(this.page === 1) return;
+                this.page -=1;
+                window.location.href = '/?page='+this.page;
+           },
+           next : function(){
+               if(this.is_next) return;
+
+               this.page +=1;
+               window.location.href = '/?page='+this.page;
+           }
+       }
+    });
+</script>
+
 <%- include bottom%>

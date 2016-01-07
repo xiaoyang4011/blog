@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.locals.moment = moment;
 app.locals._ = lodash;
+
 //中间件
 app.use(require('method-override')());
 app.use(require('cookie-parser')(config.session_secret));
