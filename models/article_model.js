@@ -69,9 +69,8 @@ articleSchema.virtual('content_display').get(function(){
 
 //小标题
 articleSchema.virtual('content_mini').get(function(){
-	return common.removeHTMLTag(md.render(this.content)).substr(0, 30);
+	return common.removeHTMLTag(md.render(this.content)).substr(0, 100);
 });
-
 
 _.extend(
 	module.exports,

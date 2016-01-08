@@ -1,3 +1,9 @@
 .post-title a:hover{
     text-decoration:none;
 }
+.error{
+    margin-top: 6px;
+}
+.error a{
+    text-decoration:none;
+}

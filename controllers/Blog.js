@@ -39,6 +39,26 @@ function index(req, res) {
 	;
 
 }
+/**
+ * 文章详情
+ * @param req
+ * @param res
+ * @returns view
+ */
+function detail(req, res){
+	var query = req.query,
+		aid = query.id || 0;
+
+	if(!aid) return res.renderError('内容不存在');
+
+	Article.Model.findOne({aid : aid}, function(err, article){
+		if(err) return res.renderError('服务器错误');
+
+		if(!article) return res.renderError('内容不存在');
+
+		return res.render('blog/show', {article : article});
+	});
+}
 
 /**
  * 添加文章
@@ -77,9 +97,6 @@ function doAdd(req, res){
 	});
 }
 
-function detail(req, res){
-	return res.render('blog/show');
-}
 
 _.extend(
 	module.exports,
