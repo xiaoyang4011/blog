@@ -4,6 +4,8 @@ var mongoose = require('../lib/mongoose'),
 	autoIncrement = require('mongoose-auto-increment'),
 	_ = require('lodash'),
 	common = require('../common/common'),
+	config = require('../config'),
+	Seq = require('seq'),
 	hljs = require('highlight.js');
 
 var md = require('markdown-it')({
@@ -71,6 +73,39 @@ articleSchema.virtual('content_display').get(function(){
 articleSchema.virtual('content_mini').get(function(){
 	return common.removeHTMLTag(md.render(this.content)).substr(0, 100);
 });
+
+/**
+ * list by page 分页查询
+ * @param page
+ * @param cb
+ */
+articleSchema.statics.list_by_page = function(page, cb){
+	var Article = this,
+		sort = {cts : -1},
+		perpage = page * config.perpage_limit,
+		skip = (page-1) * config.perpage_limit;
+
+	new Seq()
+		.seq('count', function () {
+			Article.count(this);
+		})
+		.seq(function () {
+			Article.find().sort(sort).skip(skip).limit(config.perpage_limit).exec(this);
+		})
+		.seq(function (articles) {
+			var count = this.vars.count;
+
+			return cb(null, {
+				articles : articles,
+				page     : page,
+				next     : (perpage >= count) ? true : false
+			});
+		})
+		.catch(function (err) {
+			return cb(err);
+		})
+	;
+}
 
 _.extend(
 	module.exports,
