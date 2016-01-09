@@ -15,7 +15,7 @@ function index(req, res) {
 		if(err) return res.renderError('服务器错误');
 
 		return res.render('index', ArticleInfo);
-	})
+	});
 }
 /**
  * 文章详情

@@ -12,6 +12,6 @@ describe('test web home', function(){
 					console.log(err);
 					should.not.exist(err);
 					done();
-				})
+			});
 	});
 });

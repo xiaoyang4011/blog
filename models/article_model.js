@@ -105,7 +105,7 @@ articleSchema.statics.list_by_page = function(page, cb){
 			return cb(err);
 		})
 	;
-}
+};
 
 _.extend(
 	module.exports,
