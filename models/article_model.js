@@ -79,25 +79,30 @@ articleSchema.virtual('content_mini').get(function(){
  * @param page
  * @param cb
  */
-articleSchema.statics.list_by_page = function(page, cb){
+articleSchema.statics.list_by_page = function(query, cb){
 	var Article = this,
 		sort = {cts : -1},
-		perpage = page * config.perpage_limit,
-		skip = (page-1) * config.perpage_limit;
+		perpage = query.page * config.perpage_limit,
+		skip = (query.page-1) * config.perpage_limit,
+		where = {};
+
+	if(query.tag){
+		where.tags = query.tag;
+	}
 
 	new Seq()
 		.seq('count', function () {
-			Article.count(this);
+			Article.count(where, this);
 		})
 		.seq(function () {
-			Article.find().sort(sort).skip(skip).limit(config.perpage_limit).exec(this);
+			Article.find(where).sort(sort).skip(skip).limit(config.perpage_limit).exec(this);
 		})
 		.seq(function (articles) {
 			var count = this.vars.count;
 
 			return cb(null, {
 				articles : articles,
-				page     : page,
+				page     : query.page,
 				next     : (perpage >= count) ? true : false
 			});
 		})

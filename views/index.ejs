@@ -14,7 +14,7 @@
                         <li><i class="fa fa-clock-o"></i>6小时前 由 <strong>xiao</strong>回复</li>
                         <%if(article.tags && article.tags.length > 0){%>
                             <% _.forEach(article.tags, function(tag){%>
-                                <li><a href=""><i class="fa fa-tag"></i><%=tag%></a></li>
+                                <li><a href="/?tag=<%=tag%>"><i class="fa fa-tag"></i><%=tag%></a></li>
                             <%});%>
                         <%}%>
                     </ul>

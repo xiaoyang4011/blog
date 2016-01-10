@@ -8,10 +8,11 @@ var _ = require('lodash'),
  * @returns res->view
  */
 function index(req, res) {
-	var query = req.query,
-		page = query.page || 1;
+	var query = req.query;
 
-	Article.Model.list_by_page(page, function(err, ArticleInfo){
+	query.page = query.page || 1;
+
+	Article.Model.list_by_page(query, function(err, ArticleInfo){
 		if(err) return res.renderError('服务器错误');
 
 		return res.render('index', ArticleInfo);
