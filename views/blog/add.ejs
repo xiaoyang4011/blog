@@ -16,10 +16,25 @@
                     <textarea  cols="30" rows="10" class="form-control" name="content"></textarea>
                 </div>
                 <div class="form-group">
+                    <select name="tags" class="form-control js-example-basic-multiple" multiple="multiple">
+                        <option value="Node">Node</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="PHP">PHP</option>
+                        <option value="MySql">MySql</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <input class="btn btn-success form-control" type="submit" value="提交">
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    $(function() {
+        $(".js-example-basic-multiple").select2({
+            placeholder: "添加标签"
+        });
+    });
+</script>
 <%- include ./../bottom%>

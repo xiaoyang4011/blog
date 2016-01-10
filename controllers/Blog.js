@@ -53,7 +53,8 @@ function doAdd(req, res){
 
 	var body = req.body,
 		title = body.title || '',
-		content = body.content || '';
+		content = body.content || '',
+		tags = body.tags;
 
 	if(!title || !content){
 		return res.render('blog/add');
@@ -62,10 +63,7 @@ function doAdd(req, res){
 	var article = {
 		title : title,
 		content : content,
-		tags : [
-			'node',
-			'express'
-		]
+		tags : tags
 	};
 
 	Article.Model.create(article, function(err){
