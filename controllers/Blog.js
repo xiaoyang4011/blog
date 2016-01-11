@@ -13,7 +13,9 @@ function index(req, res) {
 	query.page = query.page || 1;
 
 	Article.Model.list_by_page(query, function(err, ArticleInfo){
-		if(err) return res.renderError('服务器错误');
+		if(err) {
+			return res.renderError('服务器错误');
+		}
 
 		return res.render('index', ArticleInfo);
 	});
@@ -28,12 +30,18 @@ function detail(req, res){
 	var query = req.query,
 		aid = query.id || 0;
 
-	if(!aid) return res.renderError('内容不存在');
+	if(!aid) {
+		return res.renderError('内容不存在');
+	}
 
 	Article.Model.findOne({aid : aid}, function(err, article){
-		if(err) return res.renderError('服务器错误');
+		if(err) {
+			return res.renderError('服务器错误');
+		}
 
-		if(!article) return res.renderError('内容不存在');
+		if(!article) {
+			return res.renderError('内容不存在');
+		}
 
 		return res.render('blog/show', {article : article});
 	});
@@ -68,7 +76,9 @@ function doAdd(req, res){
 	};
 
 	Article.Model.create(article, function(err){
-		if(err) return res.renderError('服务器错误');
+		if(err) {
+			return res.renderError('服务器错误');
+		}
 
 		res.redirect('/');
 	});
