@@ -88,6 +88,8 @@ articleSchema.statics.list_by_page = function(query, cb){
 
 	if(query.tag){
 		where.tags = query.tag;
+		config.perpage_limit = 1000000;
+		perpage = -1;
 	}
 
 	new Seq()
