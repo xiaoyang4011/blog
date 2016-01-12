@@ -6,6 +6,7 @@ var mongoose = require('../lib/mongoose'),
 	common = require('../common/common'),
 	config = require('../config'),
 	Seq = require('seq'),
+	moment = require('moment'),
 	hljs = require('highlight.js');
 
 var md = require('markdown-it')({
@@ -74,6 +75,11 @@ articleSchema.virtual('content_mini').get(function(){
 	return common.removeHTMLTag(md.render(this.content)).substr(0, 100);
 });
 
+articleSchema.virtual('cts_limit_display').get(function(){
+	return moment(this.cts).fromNow();
+});
+
+
 /**
  * list by page 分页查询
  * @param page
@@ -89,7 +95,7 @@ articleSchema.statics.list_by_page = function(query, cb){
 	if(query.tag){
 		where.tags = query.tag;
 		config.perpage_limit = 1000000;
-		perpage = -1;
+
 	}
 
 	new Seq()
