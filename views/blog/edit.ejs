@@ -1,0 +1,41 @@
+<%- include ./../header%>
+<div class="body">
+    <%- include ./../nav%>
+    <br>
+    <div class="container">
+        <div id="post" class="col-md-10 col-md-offset-1">
+            <form action="/do_add" method="post">
+
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="hidden" name="_csrf" value="<%= csrf%>">
+                    <input type="hidden" name="aid" value="<%=article.aid%>">
+                    <input class="form-control" name="title" type="text" id="title" value="<%=article.title%>">
+                </div>
+                <div class="form-group">
+                    <label for="content">Content:</label>
+                    <textarea  cols="30" rows="10" class="form-control" name="content"><%-article.content%></textarea>
+                </div>
+                <div class="form-group">
+                    <select name="tags" class="form-control js-example-basic-multiple" multiple="multiple">
+                        <option value="Node">Node</option>
+                        <option value="JavaScript">JavaScript</option>
+                        <option value="PHP">PHP</option>
+                        <option value="MySql">MySql</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input class="btn btn-success form-control" type="submit" value="提交">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $(".js-example-basic-multiple").select2({
+            placeholder: "添加标签"
+        });
+    });
+</script>
+<%- include ./../bottom%>
