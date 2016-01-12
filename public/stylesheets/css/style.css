@@ -7,3 +7,7 @@
 .error a{
     text-decoration:none;
 }
+.right_edit{
+    text-align:right;
+    margin-right: 25px;
+}

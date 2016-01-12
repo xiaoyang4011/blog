@@ -3,6 +3,13 @@
 
     <div id="page" class="container">
         <div class="main group at-post">
+            <%if(!is_login){%>
+            <div class="right_edit">
+                <a href="/edit?aid=<%=article.aid%>" >
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            </div>
+            <%}%>
             <section class="content">
 
                 <div class="pad group">

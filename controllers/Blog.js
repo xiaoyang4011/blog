@@ -28,7 +28,8 @@ function index(req, res) {
  */
 function detail(req, res){
 	var query = req.query,
-		aid = query.id || 0;
+		aid = query.id || 0,
+		is_login = false;
 
 	if(!aid) {
 		return res.renderError('内容不存在');
@@ -43,7 +44,14 @@ function detail(req, res){
 			return res.renderError('内容不存在');
 		}
 
-		return res.render('blog/show', {article : article});
+		if(req.session.admin){
+			is_login = true;
+		}
+
+		return res.render('blog/show', {
+			article : article,
+			is_login : is_login
+		});
 	});
 }
 
@@ -84,13 +92,30 @@ function doAdd(req, res){
 	});
 }
 
+function edit(req, res){
+	var query = req.query,
+		aid = query.aid;
+
+	if(!aid){
+		return res.renderError('您请求的资源不见鸟~');
+	}
+
+	Article.Model.findOne({aid : +aid}, function(err, article){
+		if(err){
+			return res.renderError('您请求的资源不见鸟~');
+		}
+
+		return res.render('blog/edit', {article : article});
+	});
+}
 
 _.extend(
 	module.exports,
 	{
-		index: index,
-		add  : add,
-		doAdd : doAdd,
-		detail : detail
+		index       : index,
+		add         : add,
+		doAdd       : doAdd,
+		detail      : detail,
+		edit        : edit
 	}
 );
