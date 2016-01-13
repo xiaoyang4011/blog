@@ -65,13 +65,14 @@ function add(req, res){
 	return res.render('blog/add');
 }
 
-function doAdd(req, res){
+function doSave(req, res){
 	trimBody(req.body);
 
 	var body = req.body,
 		title = body.title || '',
 		content = body.content || '',
-		tags = body.tags;
+		tags = body.tags,
+		aid = body.aid;
 
 	if(!title || !content){
 		return res.render('blog/add');
@@ -83,13 +84,24 @@ function doAdd(req, res){
 		tags : tags
 	};
 
-	Article.Model.create(article, function(err){
-		if(err) {
-			return res.renderError('服务器错误');
-		}
+	if(aid){
+		Article.Model.update({aid : aid}, {$set: article}, function(err, result){
+			if(err){
+				return res.renderError('服务器错误');
+			}
 
-		res.redirect('/');
-	});
+			return res.redirect('/');
+		});
+	}else{
+		Article.Model.create(article, function(err){
+			if(err) {
+				return res.renderError('服务器错误');
+			}
+
+			return res.redirect('/');
+		});
+	}
+
 }
 
 function edit(req, res){
@@ -109,12 +121,13 @@ function edit(req, res){
 	});
 }
 
+
 _.extend(
 	module.exports,
 	{
 		index       : index,
 		add         : add,
-		doAdd       : doAdd,
+		doSave      : doSave,
 		detail      : detail,
 		edit        : edit
 	}

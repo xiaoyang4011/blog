@@ -4,7 +4,7 @@ var Blog = require('./../controllers/Blog');
 
 router.get('/', Blog.index);
 router.get('/add', Blog.add);
-router.post('/do_add', Blog.doAdd);
+router.post('/do_save', Blog.doSave);
 router.get('/detail', Blog.detail);
 router.get('/edit', Blog.edit);
 
