@@ -17,7 +17,7 @@
                     <textarea  cols="30" rows="10" class="form-control" name="content"><%-article.content%></textarea>
                 </div>
                 <div class="form-group">
-                    <select name="tags" class="form-control js-example-basic-multiple" multiple="multiple">
+                    <select id="multiple" name="tags" class="form-control js-example-basic-multiple" multiple="multiple">
                         <option value="Node">Node</option>
                         <option value="JavaScript">JavaScript</option>
                         <option value="PHP">PHP</option>
@@ -31,8 +31,17 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
+    var tags = '<%=article.tags%>'.split(',');
+
     $(function() {
+        $('#multiple option').each(function () {
+            if(tags.indexOf($(this).val())){
+                $(this).attr('selected','selected');
+            }
+        });
+
         $(".js-example-basic-multiple").select2({
             placeholder: "添加标签"
         });
