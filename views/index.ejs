@@ -38,13 +38,14 @@
             <%});%>
         </section>
     </div>
-</div>
 <nav>
     <ul id="page" class="pager">
         <li><a href="javascript:void(0);"  v-on:click="previous()">Previous</a></li>
         <li><a href="javascript:void(0);"  v-on:click="next()">Next</a></li>
     </ul>
 </nav>
+</div>
+<%- include bottom_nav%>
 
 <script>
     new Vue({
