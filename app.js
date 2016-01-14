@@ -59,6 +59,7 @@ app.use(function (req, res, next) {
 });
 //应用路由
 app.use('/', blog);
+app.use('/', user);
 
 if (!module.parent) {
 	app.listen(config.port, function () {

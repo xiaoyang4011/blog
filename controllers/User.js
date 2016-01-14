@@ -1,12 +1,18 @@
 var _ = require('lodash'),
 	User = require('./../models/user_model');
 
-function reg(req, res){
-	return res.render('reg');
+function login(req, res){
+	return res.render('user/login');
 }
+
+function do_login(req, res){
+	return res.render('user/login');
+}
+
 _.extend(
 	module.exports,
 	{
-		reg: reg
+		login: login,
+		do_login : do_login
 	}
 );

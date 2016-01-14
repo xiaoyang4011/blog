@@ -1,7 +1,7 @@
-var express = require('express'),
-	router = express.Router(),
-	User = require('./../controllers/User');
+var express = require('express');
+var router = express.Router();
+var User = require('./../controllers/User');
 
-router.get('/reg', User.reg);
+router.get('/login', User.login);
 
 module.exports = router;
