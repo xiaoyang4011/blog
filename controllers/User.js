@@ -1,5 +1,6 @@
 var _ = require('lodash'),
-	User = require('./../models/user_model');
+	User = require('./../models/user_model'),
+	trimBody = require('trim-body');
 
 function login(req, res){
 	return res.render('user/login');
@@ -14,7 +15,33 @@ function reg(req, res){
 }
 
 function do_reg(req, res){
-	return res.render('user/reg');
+	trimBody(req.body);
+
+	var body = req.body,
+		name = body.name,
+		password = body.password,
+		password_confirm = body.password_confirm;
+
+	if(!name || name.length < 5){
+		return res.renderError('请输入用户名或用户名长度不够');
+	}
+
+	if(!password || password !== password_confirm){
+		return res.renderError('请输入密码');
+	}
+
+	var save_date = {
+		name : name,
+		pass : password
+	};
+
+	User.Model.create(save_date, function(err){
+		if(err){
+			return res.renderError('服务器错误');
+		}
+
+		return res.render('index');
+	});
 }
 
 _.extend(
