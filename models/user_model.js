@@ -27,6 +27,11 @@ var userSchema = new Schema({
 		type       : Date,
 		required : true,
 		default    : Date.now
+	},
+	pts : {
+		type       : Date,
+		required : true,
+		default    : Date.now
 	}
 });
 
