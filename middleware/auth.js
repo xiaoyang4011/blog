@@ -3,7 +3,7 @@
  */
 exports.userRequired = function (req, res, next) {
 	if (!req.session || !req.session.user) {
-		return res.status(403).send('forbidden!');
+		return res.renderError('您未登录');
 	}
 
 	next();

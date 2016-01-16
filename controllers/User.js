@@ -7,7 +7,28 @@ function login(req, res){
 }
 
 function do_login(req, res){
-	return res.render('user/login');
+	trimBody(req.body);
+
+	var body = req.body,
+		name = body.name,
+		pass = body.password;
+
+	User.Model.findOne({
+		name : name,
+		pass : pass
+	},function(err, user){
+		if(err){
+			return res.renderError('服务器错误');
+		}
+
+		if(!user){
+			return res.renderError('账号密码不匹配');
+		}
+
+		req.session.user = user;
+
+		return res.redirect('/');
+	});
 }
 
 function reg(req, res){
@@ -40,7 +61,7 @@ function do_reg(req, res){
 			return res.renderError('服务器错误');
 		}
 
-		return res.render('index');
+		return res.redirect('/');
 	});
 }
 

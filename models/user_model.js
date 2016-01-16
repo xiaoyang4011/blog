@@ -41,7 +41,7 @@ userSchema.index({cts: 1});
 userSchema.plugin(autoIncrement.plugin, {
 	model   : 'users',
 	field   : 'uid',
-	startAt : 1
+	startAt : 1000
 });
 
 _.extend(

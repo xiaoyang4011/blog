@@ -6,10 +6,10 @@
         <div id="post" class="col-md-10 col-md-offset-1">
             <div class="col-md-4 col-md-offset-5">登陆</div>
             <br>
-            <form action="/do_login" method="post">
+            <form action="/login" method="post">
 
                 <div class="form-group">
-                    <label for="name">Title:</label>
+                    <label for="name">Name:</label>
                     <input type="hidden" name="_csrf" value="<%= csrf%>">
                     <input class="form-control" name="name" type="text">
                 </div>

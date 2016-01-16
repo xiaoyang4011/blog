@@ -10,8 +10,8 @@
                         <a href="/detail?id=<%=article.aid%>"><%=article.title%></a>
                     </h2>
                     <ul class="post-meta pad group">
-                        <li><i class="fa fa-comments"></i><a href="">25 评论</a></li>
-                        <li><i class="fa fa-clock-o"></i><%=article.cts_limit_display%> 由 <strong>xiao</strong>回复</li>
+                       <!-- <li><i class="fa fa-comments"></i><a href="">25 评论</a></li> -->
+                        <li><i class="fa fa-clock-o"></i><%=article.cts_limit_display%> </li>
                         <%if(article.tags && article.tags.length > 0){%>
                             <% _.forEach(article.tags, function(tag){%>
                                 <li><a href="/?tag=<%=tag%>"><i class="fa fa-tag"></i><%=tag%></a></li>

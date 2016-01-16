@@ -44,7 +44,7 @@ function detail(req, res){
 			return res.renderError('内容不存在');
 		}
 
-		if(req.session.admin){
+		if(req.session && req.session.user){
 			is_login = true;
 		}
 
