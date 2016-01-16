@@ -32,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 moment.locale('zh-cn');
 app.locals.moment = moment;
 app.locals._ = lodash;
+app.locals.user = null;
 
 //中间件
 app.use(require('method-override')());
@@ -55,6 +56,13 @@ app.use(errorPageMiddleware.errorPage);
 app.use(csurf());
 app.use(function (req, res, next) {
 	res.locals.csrf = req.csrfToken ? req.csrfToken() : '';
+	next();
+});
+app.use(function(req, res, next) {
+	if(req.session && req.session.user){
+		app.locals.user = req.session.user;
+	}
+
 	next();
 });
 //应用路由

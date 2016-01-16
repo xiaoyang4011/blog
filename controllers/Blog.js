@@ -1,5 +1,6 @@
 var _ = require('lodash'),
 	Article = require('./../models/article_model'),
+	Seq = require('seq'),
 	trimBody = require('trim-body');
 /**
  * 首页
@@ -28,8 +29,7 @@ function index(req, res) {
  */
 function detail(req, res){
 	var query = req.query,
-		aid = query.id || 0,
-		is_login = false;
+		aid = query.id || 0;
 
 	if(!aid) {
 		return res.renderError('内容不存在');
@@ -48,10 +48,7 @@ function detail(req, res){
 			is_login = true;
 		}
 
-		return res.render('blog/show', {
-			article : article,
-			is_login : is_login
-		});
+		return res.render('blog/show', {article : article});
 	});
 }
 
@@ -121,6 +118,47 @@ function edit(req, res){
 	});
 }
 
+function about_edit(req, res){
+	new Seq()
+		.seq(function(){
+			Article.Model.findOne({type : 200}).sort({cts : -1}).exec(this);
+		})
+		.seq(function(article){
+			var that = this;
+
+			if(article){
+				return that(null, article);
+			}
+
+			Article.Model.create({
+				title : '关于',
+				content : '关于',
+				type : 200
+			}, this);
+		})
+		.seq(function(article){
+			return res.render('blog/show', {article : article});
+		})
+		.catch(function (err) {
+			return res.renderError(err);
+		})
+	;
+}
+
+function about_me(req, res){
+	Article.Model.findOne({type : 200}).sort({cts : -1})
+		.exec(function(err, article){
+			if(err){
+				return res.renderError('服务器错误');
+			}
+
+			if(!article){
+				return res.renderError('未找到个人页');
+			}
+
+			return res.render('blog/show', {article : article});
+	});
+}
 
 _.extend(
 	module.exports,
@@ -129,6 +167,8 @@ _.extend(
 		add         : add,
 		doSave      : doSave,
 		detail      : detail,
-		edit        : edit
+		edit        : edit,
+		about_edit  : about_edit,
+		about_me    : about_me
 	}
 );

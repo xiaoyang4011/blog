@@ -47,6 +47,11 @@ var articleSchema = new Schema({
 		required : true,
 		default : 0
 	},
+	type : {
+		type    : Number,
+		required : true,
+		default : 100
+	},
 	cts : {
 		type       : Date,
 		required : true,
@@ -95,7 +100,7 @@ articleSchema.statics.list_by_page = function(query, cb){
 		sort = {cts : -1},
 		perpage = query.page * config.perpage_limit,
 		skip = (query.page-1) * config.perpage_limit,
-		where = {};
+		where = {type : 100};
 
 	if(query.tag){
 		where.tags = query.tag;
