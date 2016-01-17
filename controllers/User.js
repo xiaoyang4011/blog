@@ -32,6 +32,10 @@ function do_login(req, res){
 }
 
 function reg(req, res){
+	if(!config.is_open_reg){
+		return res.renderError('尚未开放注册');
+	}
+
 	return res.render('user/reg');
 }
 

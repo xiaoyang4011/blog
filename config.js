@@ -3,6 +3,8 @@ var config = {
 	hostname: 'localhost',
 	debug: true,
 	db: 'mongodb://127.0.0.1/blog',
+	db_user: 'lxy',
+	db_pass: '123456789',
 	// redis 配置，默认是本地
 	redis_host: '127.0.0.1',
 	redis_port: 6379,
@@ -13,6 +15,7 @@ var config = {
 	auth_cookie_name: 'node_7csa',
 
 	// 程序运行的端口
+	is_open_reg: true,
 	port: 1500
 };
 module.exports = config;
