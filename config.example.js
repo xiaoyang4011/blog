@@ -3,8 +3,8 @@ var config = {
 	hostname: 'localhost',
 	debug: true,
 	db: 'mongodb://127.0.0.1/blog',
-	db_user: 'lxy',
-	db_pass: '123456789',
+	db_user: 'db_user',
+	db_pass: 'db_pass',
 	// redis 配置，默认是本地
 	redis_host: '127.0.0.1',
 	redis_port: 6379,

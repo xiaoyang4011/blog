@@ -51,8 +51,7 @@ app.use(session({
 //检查登陆的中间件
 //app.use(auth.userRequired);
 app.use(errorPageMiddleware.errorPage);
-
-//app.use(log4js.connectLogger(logger, {level:log4js.levels.INFO}));
+app.use(log4js.connectLogger(logger, {level:log4js.levels.INFO}));
 app.use(csurf());
 app.use(function (req, res, next) {
 	res.locals.csrf = req.csrfToken ? req.csrfToken() : '';
