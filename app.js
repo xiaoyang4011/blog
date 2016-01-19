@@ -32,7 +32,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 moment.locale('zh-cn');
 app.locals.moment = moment;
 app.locals._ = lodash;
-app.locals.user = null;
 
 //中间件
 app.use(require('method-override')());
@@ -58,8 +57,10 @@ app.use(function (req, res, next) {
 	next();
 });
 app.use(function(req, res, next) {
+	res.locals.user = null;
+
 	if(req.session && req.session.user){
-		app.locals.user = req.session.user;
+		res.locals.user = req.session.user;
 	}
 
 	next();
