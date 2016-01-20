@@ -1,11 +1,22 @@
 var _ = require('lodash'),
 	User = require('./../models/user_model'),
+	config =  require('./../config'),
 	trimBody = require('trim-body');
 
+/**
+ * 登录view
+ * @param req
+ * @param res
+ */
 function login(req, res){
 	return res.render('user/login');
 }
 
+/**
+ * 登录
+ * @param req
+ * @param res
+ */
 function do_login(req, res){
 	trimBody(req.body);
 
@@ -31,6 +42,11 @@ function do_login(req, res){
 	});
 }
 
+/**
+ * 注册view
+ * @param req
+ * @param res
+ */
 function reg(req, res){
 	if(!config.is_open_reg){
 		return res.renderError('尚未开放注册');
@@ -39,6 +55,11 @@ function reg(req, res){
 	return res.render('user/reg');
 }
 
+/**
+ * 注册
+ * @param req
+ * @param res
+ */
 function do_reg(req, res){
 	trimBody(req.body);
 
@@ -69,12 +90,24 @@ function do_reg(req, res){
 	});
 }
 
+/**
+ * 退出登录
+ * @param req
+ * @param res
+ */
+function logout(req, res){
+	req.session.destroy();
+	res.clearCookie(config.auth_cookie_name, { path: '/' });
+	res.redirect('/');
+}
+
 _.extend(
 	module.exports,
 	{
 		login       : login,
 		do_login    : do_login,
 		reg         : reg,
-		do_reg      : do_reg
+		do_reg      : do_reg,
+		logout      : logout
 	}
 );
