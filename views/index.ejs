@@ -1,16 +1,26 @@
 <%- include header%>
 <div class="body">
+
+
     <%- include nav%>
     <div class="container">
         <section  id="content" class="content">
             <% _.forEach(articles, function(article){ %>
             <div class="pad group">
                 <article class="format-image group">
+
+
                     <h2 class="post-title pad">
                         <a href="/detail?id=<%=article.aid%>"><%=article.title%></a>
                     </h2>
                     <ul class="post-meta pad group">
-                       <!-- <li><i class="fa fa-comments"></i><a href="">25 评论</a></li> -->
+                        <li>
+                            <i class="fa fa-comments"></i>
+                            <a href="/detail?id=<%=article.aid%>">
+                                <span id = "url::http://www.7csa.com/detail?id=<%=article.aid%>" class = "cy_cmt_count" ></span>条评论
+                            </a>
+                        </li>
+                        <script id="cy_cmt_num" src="http://changyan.sohu.com/upload/plugins/plugins.list.count.js?clientId=cyscyYsCa"></script>
                         <li><i class="fa fa-clock-o"></i><%=article.cts_limit_display%> </li>
                         <%if(article.tags && article.tags.length > 0){%>
                             <% _.forEach(article.tags, function(tag){%>
@@ -38,6 +48,7 @@
             <%});%>
         </section>
     </div>
+
 <nav>
     <ul id="page" class="pager">
         <li><a href="javascript:void(0);"  v-on:click="previous()">Previous</a></li>
@@ -68,6 +79,6 @@
            }
        }
     });
-</script>
 
+</script>
 <%- include bottom%>
