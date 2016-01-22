@@ -1,5 +1,6 @@
 var _ = require('lodash'),
 	Article = require('./../models/article_model'),
+	Tags = require('./../models/tags_model'),
 	Seq = require('seq'),
 	trimBody = require('trim-body');
 /**
@@ -160,6 +161,38 @@ function about_me(req, res){
 	});
 }
 
+function tags(req, res){
+	Tags.Model.find({st : 0},function(err, tags){
+		if(err) {
+			return res.renderError('服务器错误');
+		}
+
+		return res.render('blog/tags', {tags : tags});
+	});
+}
+
+/**
+ * 添加tag页
+ * @param req
+ * @param res
+ * @returns {*|String}
+ */
+function add_tag(req, res){
+	return res.render('blog/add_tag');
+}
+
+/**
+ * 保存tag
+ * @param req
+ * @param res
+ */
+function save_tag(req, res){
+	trimBody(req.body);
+
+	var body = req.body;
+
+
+}
 _.extend(
 	module.exports,
 	{
@@ -169,6 +202,9 @@ _.extend(
 		detail      : detail,
 		edit        : edit,
 		about_edit  : about_edit,
-		about_me    : about_me
+		about_me    : about_me,
+		tags        : tags,
+		add_tag     : add_tag,
+		save_tag    : save_tag
 	}
 );

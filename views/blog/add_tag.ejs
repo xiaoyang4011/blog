@@ -1,0 +1,27 @@
+<%- include ./../header%>
+<div class="body">
+	<%- include ./../nav%>
+	<br>
+	<div class="container">
+		<div id="post" class="col-md-10 col-md-offset-1">
+			<form action="/save_tag" method="post">
+
+				<div class="form-group">
+					<label for="title">Tag:</label>
+					<input type="hidden" name="_csrf" value="<%= csrf%>">
+					<input class="form-control" name="name" type="text">
+				</div>
+				<div class="form-group">
+					<label for="content">Status:</label>
+					<div class="switch switch-large">
+						<input type="checkbox" name="my-checkbox" checked>
+					</div>
+				</div>
+				<div class="form-group">
+					<input class="btn btn-success form-control" type="submit" value="提交">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<%- include ./../bottom%>

@@ -31,10 +31,10 @@ var tagSchema = new Schema({
 	}
 });
 
-userSchema.index({tid: 1});
-userSchema.index({cts: 1});
+tagSchema.index({tid: 1});
+tagSchema.index({cts: 1});
 
-userSchema.plugin(autoIncrement.plugin, {
+tagSchema.plugin(autoIncrement.plugin, {
 	model   : 'tags',
 	field   : 'tid',
 	startAt : 1
