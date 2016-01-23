@@ -2,6 +2,7 @@ var _ = require('lodash'),
 	Article = require('./../models/article_model'),
 	Tags = require('./../models/tags_model'),
 	Seq = require('seq'),
+	tags_lib = require('./../lib/tags'),
 	trimBody = require('trim-body');
 /**
  * 首页
@@ -45,10 +46,6 @@ function detail(req, res){
 			return res.renderError('内容不存在');
 		}
 
-		if(req.session && req.session.user){
-			is_login = true;
-		}
-
 		return res.render('blog/show', {article : article});
 	});
 }
@@ -60,7 +57,7 @@ function detail(req, res){
  * @return view
  */
 function add(req, res){
-	return res.render('blog/add');
+	return res.render('blog/add', {tags : tags_lib.tags});
 }
 
 function doSave(req, res){
@@ -162,7 +159,7 @@ function about_me(req, res){
 }
 
 function tags(req, res){
-	Tags.Model.find({st : 0},function(err, tags){
+	Tags.Model.find(function(err, tags){
 		if(err) {
 			return res.renderError('服务器错误');
 		}
@@ -189,10 +186,58 @@ function add_tag(req, res){
 function save_tag(req, res){
 	trimBody(req.body);
 
-	var body = req.body;
+	var body = req.body,
+		name = body.name,
+		status = body.status || 0,
+		tid = body.tid;
 
+	if(!name){
+		return res.renderError('名字不能为空');
+	}
 
+	var Tag = {
+		name : name,
+		st : status
+	};
+
+	if(tid){
+		Tags.Model.update({tid : tid}, {$set: Tag}, function(err){
+			if(err){
+				return res.renderError('服务器错误');
+			}
+
+			return res.redirect('/tags');
+		});
+	}else{
+		Tags.Model.create(Tag, function(err){
+			if(err) {
+				return res.renderError('服务器错误');
+			}
+
+			return res.redirect('/tags');
+		});
+	}
 }
+
+function edit_tag(req, res){
+	trimBody(req.query);
+
+	var query = req.query,
+		tid = query.tid;
+
+	if(!tid){
+		return res.renderError('您请求的资源不见鸟~');
+	}
+
+	Tags.Model.findOne({tid : +tid}, function(err, tag){
+		if(err){
+			return res.renderError('您请求的资源不见鸟~');
+		}
+
+		return res.render('blog/edit_tag', {tag : tag});
+	});
+}
+
 _.extend(
 	module.exports,
 	{
@@ -205,6 +250,7 @@ _.extend(
 		about_me    : about_me,
 		tags        : tags,
 		add_tag     : add_tag,
-		save_tag    : save_tag
+		save_tag    : save_tag,
+		edit_tag    : edit_tag
 	}
 );

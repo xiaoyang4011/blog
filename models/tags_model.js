@@ -40,6 +40,11 @@ tagSchema.plugin(autoIncrement.plugin, {
 	startAt : 1
 });
 
+
+tagSchema.virtual('st_display').get(function(){
+	return (this.st) ? '开启' : '关闭';
+});
+
 _.extend(
 	module.exports,
 	{

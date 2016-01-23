@@ -1,0 +1,35 @@
+<%- include ./../header%>
+<div class="body">
+
+
+    <%- include ./../nav%>
+    <div class="container">
+        <section  id="content" class="content">
+            <br>
+            <div data-example-id="bordered-table">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tag</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% _.forEach(tags, function(tag){%>
+                    <tr>
+                        <th scope="row"><%=tag.tid%></th>
+                        <td><%=tag.name%></td>
+                        <td><%=tag.st_display%></td>
+                        <td><a href="/edit_tag?tid=<%=tag.tid %>">编辑</a></td>
+                    </tr>
+                    <%});%>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+</div>
+<%- include ./../bottom%>

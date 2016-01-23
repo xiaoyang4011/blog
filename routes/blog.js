@@ -10,6 +10,9 @@ router.get('/detail', Blog.detail);
 router.get('/edit', auth.userRequired, Blog.edit);
 router.get('/about-me-edit', auth.userRequired, Blog.about_edit);
 router.get('/about-me', Blog.about_me);
-router.get('/add_tag', Blog.add_tag);
+router.get('/tags', auth.userRequired, Blog.tags);
+router.get('/add_tag', auth.userRequired, Blog.add_tag);
+router.post('/save_tag', auth.userRequired, Blog.save_tag);
+router.get('/edit_tag', auth.userRequired, Blog.edit_tag);
 
 module.exports = router;
