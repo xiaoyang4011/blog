@@ -79,29 +79,9 @@ if (!module.parent) {
 }
 
 // 404错误处理
-app.use(function(req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
-});
-
-// 开发环境，500错误处理和错误堆栈跟踪
-if (app.get('env') === 'development') {
-	app.use(function(err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: err
-		});
-	});
-}
-
-// 生产环境，500错误处理
-app.use(function(err, req, res, next) {
-	res.status(err.status || 500);
-	res.render('error', {
-		message: err.message,
-		error: {}
+app.get('*', function(req, res){
+	res.render('notify/404', {
+		error: '404 您访问的页面不存在'
 	});
 });
 

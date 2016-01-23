@@ -18,6 +18,6 @@ log4js.configure({
 });
 
 var logger = log4js.getLogger('Logger');
-logger.setLevel(config.debug && env !== 'test' ? 'DEBUG' : 'ERROR')
+logger.setLevel(env !== 'test' ? 'DEBUG' : 'ERROR')
 
 module.exports = logger;
