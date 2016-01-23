@@ -2,7 +2,6 @@ var _ = require('lodash'),
 	Article = require('./../models/article_model'),
 	Tags = require('./../models/tags_model'),
 	Seq = require('seq'),
-	tags_lib = require('./../lib/tags'),
 	trimBody = require('trim-body');
 /**
  * 首页
@@ -57,7 +56,13 @@ function detail(req, res){
  * @return view
  */
 function add(req, res){
-	return res.render('blog/add', {tags : tags_lib.tags});
+	Tags.Model.find({st : 1}, function(err, tags){
+		if(err){
+			return res.renderError('服务器错误');
+		}
+
+		return res.render('blog/add', {tags : tags});
+	});
 }
 
 function doSave(req, res){
@@ -107,13 +112,26 @@ function edit(req, res){
 		return res.renderError('您请求的资源不见鸟~');
 	}
 
-	Article.Model.findOne({aid : +aid}, function(err, article){
-		if(err){
-			return res.renderError('您请求的资源不见鸟~');
-		}
+	new Seq()
+		.seq(function(){
+			Tags.Model.find({st : 1}, this);
+		})
+		.seq(function(tags){
+			Article.Model.findOne({aid : +aid}, function(err, article){
+				if(err){
+					return res.renderError('您请求的资源不见鸟~');
+				}
 
-		return res.render('blog/edit', {article : article});
-	});
+				return res.render('blog/edit', {
+					article : article,
+					tags : tags
+				});
+			});
+		})
+		.catch(function(err){
+			return res.renderError('服务器错误');
+		})
+	;
 }
 
 function about_edit(req, res){
