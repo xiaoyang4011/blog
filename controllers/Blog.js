@@ -2,6 +2,8 @@ var _ = require('lodash'),
 	Article = require('./../models/article_model'),
 	Tags = require('./../models/tags_model'),
 	Seq = require('seq'),
+	config = require('./../config'),
+	qiniu = require('qiniu'),
 	trimBody = require('trim-body');
 /**
  * 首页
@@ -255,7 +257,37 @@ function edit_tag(req, res){
 		return res.render('blog/edit_tag', {tag : tag});
 	});
 }
+//-----------------------------------------------------------------
+//测试七牛
+function upload_test(req, res){
 
+	return res.render('upload/index',{
+		domain : config.qiniu.Domain,
+		uptoken_url : config.qiniu.Uptoken_Url
+	});
+}
+
+qiniu.conf.ACCESS_KEY = config.qiniu.ACCESS_KEY;
+qiniu.conf.SECRET_KEY = config.qiniu.SECRET_KEY;
+
+var uptoken = new qiniu.rs.PutPolicy(config.qiniu.Bucket_Name);
+
+//测试七牛
+function uptoken_test(req, res) {
+	console.log(uptoken);
+
+	var token = uptoken.token();
+	res.header("Cache-Control", "max-age=0, private, must-revalidate");
+	res.header("Pragma", "no-cache");
+	res.header("Expires", 0);
+	if (token) {
+		res.json({
+			uptoken: token
+		});
+	}
+}
+
+//-----------------------------------------------------------------
 _.extend(
 	module.exports,
 	{
@@ -269,6 +301,8 @@ _.extend(
 		tags        : tags,
 		add_tag     : add_tag,
 		save_tag    : save_tag,
-		edit_tag    : edit_tag
+		edit_tag    : edit_tag,
+		upload_test : upload_test,
+		uptoken_test     : uptoken_test
 	}
 );

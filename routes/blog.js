@@ -14,5 +14,7 @@ router.get('/tags', auth.userRequired, Blog.tags);
 router.get('/add_tag', auth.userRequired, Blog.add_tag);
 router.post('/save_tag', auth.userRequired, Blog.save_tag);
 router.get('/edit_tag', auth.userRequired, Blog.edit_tag);
+router.get('/upload', Blog.upload_test);
+router.get('/uptoken', Blog.uptoken_test);
 
 module.exports = router;
