@@ -33,7 +33,8 @@
     "trim-body": "~0.0.4",
     "highlight.js": "~9.0.0",
     "seq": "~0.3.5",
-    "moment": "~2.10.6"
+    "moment": "~2.10.6",
+    "qiniu": "~6.1.9"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
