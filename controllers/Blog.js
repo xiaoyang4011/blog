@@ -3,7 +3,8 @@ var _ = require('lodash'),
 	Tags = require('./../models/tags_model'),
 	Seq = require('seq'),
 	config = require('./../config'),
-	qiniu = require('qiniu'),
+	qiniu = require('./../lib/qiniu'),
+	uptoken = new qiniu.rs.PutPolicy(config.qiniu.Bucket_Name),
 	trimBody = require('trim-body');
 /**
  * 首页
@@ -257,9 +258,13 @@ function edit_tag(req, res){
 		return res.render('blog/edit_tag', {tag : tag});
 	});
 }
-//-----------------------------------------------------------------
-//测试七牛
-function upload_test(req, res){
+/**
+ * 上传文件页，返回domain, uptoken_url
+ * @param req
+ * @param res
+ * @returns {*|String}
+ */
+function uploadFile(req, res){
 
 	return res.render('upload/index',{
 		domain : config.qiniu.Domain,
@@ -267,16 +272,14 @@ function upload_test(req, res){
 	});
 }
 
-qiniu.conf.ACCESS_KEY = config.qiniu.ACCESS_KEY;
-qiniu.conf.SECRET_KEY = config.qiniu.SECRET_KEY;
-
-var uptoken = new qiniu.rs.PutPolicy(config.qiniu.Bucket_Name);
-
-//测试七牛
-function uptoken_test(req, res) {
-	console.log(uptoken);
-
+/**
+ * 生成Token
+ * @param req
+ * @param res
+ */
+function upToken(req, res) {
 	var token = uptoken.token();
+
 	res.header("Cache-Control", "max-age=0, private, must-revalidate");
 	res.header("Pragma", "no-cache");
 	res.header("Expires", 0);
@@ -287,22 +290,21 @@ function uptoken_test(req, res) {
 	}
 }
 
-//-----------------------------------------------------------------
 _.extend(
 	module.exports,
 	{
-		index       : index,
-		add         : add,
-		doSave      : doSave,
-		detail      : detail,
-		edit        : edit,
-		about_edit  : about_edit,
-		about_me    : about_me,
-		tags        : tags,
-		add_tag     : add_tag,
-		save_tag    : save_tag,
-		edit_tag    : edit_tag,
-		upload_test : upload_test,
-		uptoken_test     : uptoken_test
+		index           : index,
+		add             : add,
+		doSave          : doSave,
+		detail          : detail,
+		edit            : edit,
+		about_edit      : about_edit,
+		about_me        : about_me,
+		tags            : tags,
+		add_tag         : add_tag,
+		save_tag        : save_tag,
+		edit_tag        : edit_tag,
+		uploadFile      : uploadFile,
+		upToken         : upToken
 	}
 );
