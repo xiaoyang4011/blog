@@ -4,6 +4,7 @@ var _ = require('lodash'),
 	Seq = require('seq'),
 	config = require('./../config'),
 	qiniu = require('./../lib/qiniu'),
+	moment = require('moment'),
 	uptoken = new qiniu.rs.PutPolicy(config.qiniu.Bucket_Name),
 	trimBody = require('trim-body');
 /**
@@ -290,6 +291,23 @@ function upToken(req, res) {
 	}
 }
 
+function FileList(req, res){
+	qiniu.rsf.listPrefix(config.qiniu.Bucket_Name, '', null, 10, function(err, result){
+		if(err) {
+			return res.renderError('服务器出现错误');
+		}
+
+		var file_list = result && result.items || [],
+			files = _.map(file_list, function(file){
+			file.fsize = (file.fsize) / 1024;
+
+			return file;
+		});
+
+		return res.render('upload/file_list', {files : files});
+	});
+}
+
 _.extend(
 	module.exports,
 	{
@@ -305,6 +323,7 @@ _.extend(
 		save_tag        : save_tag,
 		edit_tag        : edit_tag,
 		uploadFile      : uploadFile,
-		upToken         : upToken
+		upToken         : upToken,
+		FileList        : FileList
 	}
 );

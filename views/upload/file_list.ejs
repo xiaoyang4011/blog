@@ -1,0 +1,39 @@
+<%- include ./../header%>
+<div class="body">
+
+
+    <%- include ./../nav%>
+    <div class="container">
+        <section  id="content" class="content">
+            <br>
+            <div data-example-id="bordered-table">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>文件名</th>
+                        <th>文件大小</th>
+                        <th>文件类型</th>
+                        <th>上传时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% _.forEach(files, function(file){%>
+                    <tr>
+                        <th scope="row"><%=file.hash%></th>
+                        <td><%=file.key%></td>
+                        <td><%=file.fsize%></td>
+                        <td><%=file.mimeType%></td>
+                        <td><%=file.putTime%></td>
+                        <td><a>编辑</a></td>
+                    </tr>
+                    <%});%>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+</div>
+<%- include ./../bottom%>
