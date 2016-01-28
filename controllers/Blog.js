@@ -291,6 +291,12 @@ function upToken(req, res) {
 	}
 }
 
+/**
+ * 获取qiniu文件列表
+ * @param req
+ * @param res
+ * @constructor
+ */
 function FileList(req, res){
 	qiniu.rsf.listPrefix(config.qiniu.Bucket_Name, '', null, 10, function(err, result){
 		if(err) {
@@ -299,7 +305,8 @@ function FileList(req, res){
 
 		var file_list = result && result.items || [],
 			files = _.map(file_list, function(file){
-			file.fsize = (file.fsize) / 1024;
+			file.fsize = ((file.fsize) / 1024).toFixed(2) + 'KB';
+			file.putTime = moment(parseInt(file.putTime/10000)).format('YYYY-MM-DD HH:mm');
 
 			return file;
 		});
