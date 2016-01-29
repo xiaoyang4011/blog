@@ -17,5 +17,6 @@ router.get('/edit_tag', auth.userRequired, Blog.edit_tag);
 router.get('/upload', Blog.uploadFile);
 router.get('/uptoken', Blog.upToken);
 router.get('/file_list', Blog.FileList);
+router.post('/record_file', Blog.recordFile);
 
 module.exports = router;

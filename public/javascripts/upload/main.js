@@ -56,7 +56,22 @@ $(function() {
             },
             'FileUploaded': function(up, file, info) {
                 var progress = new FileProgress(file, 'fsUploadProgress');
-                progress.setComplete(up, info);
+	            var csrf = $('#csrf').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/record_file',
+                    data: {
+	                    '_csrf' : csrf,
+	                    'info'  : info
+                    },
+                    success: function(){
+                    },
+	                dataType: 'json'
+	            });
+
+	            progress.setComplete(up, info);
+
             },
             'Error': function(up, err, errTip) {
                 $('table').show();

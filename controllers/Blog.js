@@ -315,6 +315,18 @@ function FileList(req, res){
 	});
 }
 
+/**
+ * 记录上传至七牛的文件
+ * @param req
+ * @param res
+ * @returns {*}
+ */
+function recordFile(req, res){
+	var body = req.body;
+
+	return res.json({code : 0});
+}
+
 _.extend(
 	module.exports,
 	{
@@ -331,6 +343,7 @@ _.extend(
 		edit_tag        : edit_tag,
 		uploadFile      : uploadFile,
 		upToken         : upToken,
-		FileList        : FileList
+		FileList        : FileList,
+		recordFile      : recordFile
 	}
 );
