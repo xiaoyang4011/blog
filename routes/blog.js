@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var auth = require('./../middleware/auth');
 var Blog = require('./../controllers/Blog');
+var upload = require('./../lib/multer');
 
 router.get('/', Blog.index);
 router.get('/add', auth.userRequired, Blog.add);
@@ -18,5 +19,7 @@ router.get('/upload', auth.userRequired, Blog.uploadFile);
 router.get('/uptoken', auth.userRequired, Blog.upToken);
 router.get('/file_list', auth.userRequired, Blog.FileList);
 router.post('/record_file', auth.userRequired, Blog.recordFile);
+router.get('/upload_test', Blog.uploadTest);
+router.post('/do_upload_test', upload.single('image'), Blog.doUploadTest);
 
 module.exports = router;

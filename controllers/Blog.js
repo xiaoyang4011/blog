@@ -327,6 +327,15 @@ function recordFile(req, res){
 	return res.json({code : 0});
 }
 
+function uploadTest(req, res){
+	return res.render('upload/upload');
+}
+
+
+function doUploadTest(req, res){
+	return res.redirect('/');
+}
+
 _.extend(
 	module.exports,
 	{
@@ -344,6 +353,8 @@ _.extend(
 		uploadFile      : uploadFile,
 		upToken         : upToken,
 		FileList        : FileList,
-		recordFile      : recordFile
+		recordFile      : recordFile,
+		uploadTest      : uploadTest,
+		doUploadTest    : doUploadTest
 	}
 );
