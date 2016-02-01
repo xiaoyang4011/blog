@@ -333,9 +333,17 @@ function uploadTest(req, res){
 
 
 function doUploadTest(req, res){
-	console.log(req.file);
+	var fileMsg = req.file,
+		extra = new qiniu.io.PutExtra(),
+		token = uptoken.token();
 
-	return res.redirect('/');
+	qiniu.io.putFile(token, fileMsg.filename, fileMsg.path, extra, function(err, ret) {
+		if(err) {
+			return res.renderError('服务器出现错误');
+		}
+
+		return res.redirect('/');
+	});
 }
 
 _.extend(
