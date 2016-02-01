@@ -333,6 +333,8 @@ function uploadTest(req, res){
 
 
 function doUploadTest(req, res){
+	console.log(req.file);
+
 	return res.redirect('/');
 }
 
