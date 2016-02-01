@@ -35,7 +35,8 @@
     "seq": "~0.3.5",
     "moment": "~2.10.6",
     "qiniu": "~6.1.9",
-    "crypto": "~0.0.3"
+    "crypto": "~0.0.3",
+    "multer": "~1.1.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
