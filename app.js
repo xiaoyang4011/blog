@@ -17,6 +17,7 @@ var logger = require('./common/logger');
 var log4js = require('log4js');
 var moment = require('moment');
 var lodash = require('lodash');
+var wechatApi = require('./controllers/Wechat');
 
 var app = express();
 
@@ -70,6 +71,7 @@ app.use(function(req, res, next) {
 app.use('/', blog);
 app.use('/', user);
 app.use('/', wechat);
+app.use('/wechat', wechatApi.wechatRes);
 
 if (!module.parent) {
 	app.listen(config.port, function () {

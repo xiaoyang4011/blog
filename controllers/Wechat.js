@@ -1,7 +1,13 @@
 var _ = require('lodash'),
 	crypto = require("crypto"),
-	config =  require('./../config');
+	config =  require('./../config'),
+	wechat = require('wechat');
 
+var config = {
+	token: config.wechat.Token,
+	appid: config.wechat.AppID,
+	encodingAESKey: config.wechat.EncodingAESKey
+};
 
 function sha1(str){
 	var md5sum = crypto.createHash("sha1");
@@ -18,11 +24,11 @@ function wechatAuth(req, res){
 	var query = req.query,
 		signature = query.signature || '',
 		echostr = query.echostr || '',
-		timestamp = query['timestamp'] || '',
+		timestamp = query.timestamp || '',
 		nonce = query.nonce || '',
-		oriArray = new Array();
+		oriArray = [];
 
-	oriArray[0] = nonce,
+	oriArray[0] = nonce;
 	oriArray[1] = timestamp;
 	oriArray[2] = "e574f89de1fb4d977c3bddcfce3ab640";
 	oriArray.sort();
@@ -39,9 +45,21 @@ function wechatAuth(req, res){
 	}
 }
 
+var wechatRes = wechat(config, function(req, res, next){
+	var message = req.weixin;
+
+	if (message.FromUserName === '呵呵') {
+
+		res.reply('呵呵你妹');
+	}
+
+	return next();
+});
+
 _.extend(
 	module.exports,
 	{
-		wechatAuth : wechatAuth
+		wechatAuth : wechatAuth,
+		wechatRes  : wechatRes
 	}
 );
