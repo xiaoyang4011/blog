@@ -37,7 +37,8 @@
     "qiniu": "~6.1.9",
     "crypto": "~0.0.3",
     "multer": "~1.1.0",
-    "wechat": "~2.0.3"
+    "wechat": "~2.0.3",
+    "request": "~2.67.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
