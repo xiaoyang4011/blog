@@ -14,8 +14,10 @@ exports.wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 
 	if(inputMsg){
 		ebooks.search(inputMsg, function(err, result){
-			if(err) {
+			if (err) {
 				res.reply('您的请求上天了');
+
+				return next();
 			}
 
 			var books= result.Books || [];
@@ -32,8 +34,11 @@ exports.wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 			});
 
 			res.reply(replyBooks);
+
+			return next();
 		});
+	} else {
+		return next();
 	}
 
-	return next();
 });
