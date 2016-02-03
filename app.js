@@ -48,11 +48,9 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-//微信中间件
-app.use('/wechat', wechat.wechatAPI);
 app.use(errorPageMiddleware.errorPage);
 app.use(log4js.connectLogger(logger, {level:log4js.levels.INFO}));
-app.use(csurf());
+app.use('/do*', csurf());
 app.use(function (req, res, next) {
 	res.locals.csrf = req.csrfToken ? req.csrfToken() : '';
 	next();
@@ -69,6 +67,7 @@ app.use(function(req, res, next) {
 //应用路由
 app.use('/', blog);
 app.use('/', user);
+app.use('/wechat', wechat.wechatAPI);
 
 if (!module.parent) {
 	app.listen(config.port, function () {
