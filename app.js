@@ -48,8 +48,8 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-//检查登陆的中间件
-//app.use(auth.userRequired);
+//微信中间件
+app.use('/wechat', wechat.wechatAPI);
 app.use(errorPageMiddleware.errorPage);
 app.use(log4js.connectLogger(logger, {level:log4js.levels.INFO}));
 app.use(csurf());
@@ -69,7 +69,6 @@ app.use(function(req, res, next) {
 //应用路由
 app.use('/', blog);
 app.use('/', user);
-app.use('/wechat', wechat.wechatAPI);
 
 if (!module.parent) {
 	app.listen(config.port, function () {
