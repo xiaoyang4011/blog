@@ -3,7 +3,7 @@ var _ = require('lodash'),
 	wechat = require('wechat'),
 	ebooks = require('./../lib/ebooks');
 
-exports.wechatAPI = wechat(config.wechat.Token, function(req, res, next){
+var wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 	var message = req.weixin,
 		inputMsg = message.Content;
 
@@ -28,7 +28,7 @@ exports.wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 				replyBook.title = book.Title;
 				replyBook.description = book.Description;
 				replyBook.picurl = book.Image;
-				replyBook.url = 'http://www.baidu.com/';
+				replyBook.url = 'http://www.7csa.com/book?bid='+ book.ID;
 
 				return replyBook;
 			});
@@ -42,3 +42,25 @@ exports.wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 	}
 
 });
+
+function getBook(req, res){
+	var query = req.query,
+		bid = query.bid;
+
+	ebooks.book(bid, function(err, book){
+		if(err){
+			return res.renderError('您的请求上天了');
+		}
+
+		return res.render('wechat/book', {book : book});
+	});
+}
+
+
+_.extend(
+	module.exports,
+	{
+		wechatAPI       : wechatAPI,
+		getBook         : getBook
+	}
+);

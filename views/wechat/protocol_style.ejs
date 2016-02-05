@@ -1,0 +1,104 @@
+<style>
+    charset"UTF-8";
+    .body_protocol .main_wrap h1 {
+        font-size: 24px;
+    }
+    body {
+        font-family:"Microsoft YaHei", "微软雅黑", "Microsoft JhengHei";
+        font-size: 14px;
+        line-height: 1.125;
+        border: none;
+    }
+    body, h1, dl, dt, dd, p, blockquote {
+        margin: 0;
+        padding: 0;
+    }
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+    a {
+        text-decoration: none;
+    }
+    a, a:hover, a:active {
+        outline: none;
+        text-decoration: none;
+    }
+    .body_protocol .main_wrap .services dl:before {
+        float: left;
+    }
+    .hide, .popup_block, .popup_cover_block, .popup_modal_block, .suggest_box {
+        display: none;
+    }
+    body .main_wrap {
+        margin: 0 auto;
+    }
+    .body_protocol .main_wrap {
+        background-color: #FFF;
+        margin-top: 20px;
+        padding: 20px;
+        color: #333;
+    }
+    .body_protocol .main_wrap h1 {
+        margin-bottom : 20px;
+        text-align: center;
+    }
+    .body_protocol .main_wrap .arrangement_id {
+        text-align: right;
+        padding: 0 80px;
+    }
+    .body_protocol .main_wrap table {
+        width: 100%;
+        text-align: center;
+    }
+    .body_protocol .main_wrap .comment {
+        text-align: left;
+    }
+    .body_protocol .main_wrap table td {
+        border: 1px solid #333;
+    }
+    .body_protocol .main_wrap .services {
+        counter-reset: service;
+    }
+    .body_protocol .main_wrap .services dl {
+        line-height: 26px;
+        margin-bottom: 22px;
+        position: relative;
+        counter-reset: item;
+    }
+    .body_protocol .main_wrap .services dl:before {
+        content: counters(service, ".")".";
+        counter-increment: service;
+        font-weight: bolder;
+    }
+    .body_protocol .main_wrap .services dl > dt {
+        font-weight: bolder;
+    }
+    .body_protocol .main_wrap .services dl > dd {
+        margin-left: 40px;
+    }
+    .body_protocol .main_wrap .services dl > dd:before {
+        content:"(" counters(item, ".")")";
+        counter-increment: item;
+        position: absolute;
+        left: 20px;
+    }
+    .body_protocol .main_wrap .services dl > dd dl:before {
+        content:'';
+        counter-increment: None;
+    }
+    .body_protocol .main_wrap .services dl > dd dl > dt {
+        font-weight: normal;
+    }
+    .body_protocol .main_wrap .services dl > dd dl > dd:before {
+        content: counters(item, ".");
+        left: 10px;
+    }
+    .body_protocol .main_wrap .services dl .table {
+        font-weight: bolder;
+        margin-top: 20px;
+    }
+    .body_protocol .main_wrap .services dl .table:before {
+        content:"";
+    }
+</style>

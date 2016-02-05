@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Book</title>
+    <meta content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="layoutmode" content="standard"><% // uc 标准模式（有样式的)  %>
+    <title>图书</title>
+    <% include ./protocol_style %>
 </head>
-<body>
+<body class="body_protocol" >
+<div class="main_wrap">
+    <h3 class="subtitle"><%=book.Title%></h3>
 
+    <h5>Description : <%=book.Description%></h5>
+    <h5>Publisher : <%=book.Publisher%></h5>
+    <h5>Author : <%=book.Author%></h5>
+    <h5>Page : <%=book.Page%></h5>
+    <h5>Year : <%=book.Year%></h5>
+
+
+    <img src="<%=book.Image%>" alt="pic">
+    <br>
+    <h5><a href="<%=book.Download%>"> DownLoad </a></h5>
+
+    <div class="services">
+    </div>
+</div>
 </body>
 </html>

@@ -9,6 +9,7 @@ var compress = require('compression');
 var RedisStore = require('connect-redis')(session);
 var user = require('./routes/user');
 var blog = require('./routes/blog');
+var wechat = require('./routes/wechat');
 var csurf = require('csurf');
 var auth = require('./middleware/auth');
 var errorPageMiddleware = require('./middleware/error_page');
@@ -16,7 +17,7 @@ var logger = require('./common/logger');
 var log4js = require('log4js');
 var moment = require('moment');
 var lodash = require('lodash');
-var wechat = require('./controllers/Wechat');
+var wechatFun = require('./controllers/Wechat');
 
 var app = express();
 
@@ -67,7 +68,8 @@ app.use(function(req, res, next) {
 //应用路由
 app.use('/', blog);
 app.use('/', user);
-app.use('/wechat', wechat.wechatAPI);
+app.use('/', wechat);
+app.use('/wechat', wechatFun.wechatAPI);
 
 if (!module.parent) {
 	app.listen(config.port, function () {
