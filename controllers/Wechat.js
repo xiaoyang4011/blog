@@ -56,11 +56,19 @@ function getBook(req, res){
 	});
 }
 
+/**
+ * 创建菜单
+ * @param req
+ * @param res
+ */
+function createMenu(req, res){
 
+}
 _.extend(
 	module.exports,
 	{
 		wechatAPI       : wechatAPI,
-		getBook         : getBook
+		getBook         : getBook,
+		createMenu      : createMenu
 	}
 );
