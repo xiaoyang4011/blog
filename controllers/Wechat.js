@@ -43,6 +43,11 @@ var wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 
 });
 
+/**
+ * 获取图书详情
+ * @param req
+ * @param res
+ */
 function getBook(req, res){
 	var query = req.query,
 		bid = query.bid;
