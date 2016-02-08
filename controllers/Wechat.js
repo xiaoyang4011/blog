@@ -15,34 +15,11 @@ var wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 	}
 
 	if((message.MsgType == 'event') && (message.Event == 'CLICK')){
-		if(eventKey === 'javascript' || eventKey === 'php' || eventKey === 'mysql'){
-			ebooks.search(eventKey, function(err, result){
-				if (err) {
-					res.reply('您的请求上天了');
-
-					return next();
-				}
-
-				var books= result.Books || [];
-
-				var replyBooks = _.map(books, function(book){
-					var replyBook = {};
-
-					replyBook.title = book.Title;
-					replyBook.description = book.Description;
-					replyBook.picurl = book.Image;
-					replyBook.url = 'http://www.7csa.com/book?bid='+ book.ID;
-
-					return replyBook;
-				});
-
-				res.reply(replyBooks);
-
-				return next();
-			});
+		if(eventKey === 'every_day' || eventKey === 'news'){
+			res.reply('暂未开放,敬请期待');
+		}else{
+			inputMsg = eventKey;
 		}
-	}else{
-		return next();
 	}
 
 	if(inputMsg){
