@@ -41,6 +41,8 @@ var wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 				return next();
 			});
 		}
+	}else{
+		return next();
 	}
 
 	if(inputMsg){
