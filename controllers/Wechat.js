@@ -17,7 +17,9 @@ var wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 	if((message.MsgType == 'event') && (message.Event == 'CLICK')){
 		if(eventKey === 'every_day' || eventKey === 'news'){
 			res.reply('暂未开放,敬请期待');
-		}else{
+		}else if(eventKey === 'find'){
+			res.reply('如果您需要查找图书请直接输入关键字,如:java');
+		}else {
 			inputMsg = eventKey;
 		}
 	}
@@ -96,6 +98,11 @@ function createMenu(req, res){
 						"type": "click",
 						"name": "MySql",
 						"key": "mysql"
+					},
+					{
+						"type": "click",
+						"name": "其他",
+						"key": "find"
 					}
 				]
 			},
