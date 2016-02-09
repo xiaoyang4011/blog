@@ -18,7 +18,7 @@ var wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 		if(eventKey === 'every_day' || eventKey === 'news'){
 			res.reply('暂未开放,敬请期待');
 		}else if(eventKey === 'find'){
-			res.reply('如果您需要查找图书请直接输入关键字,如:java');
+			res.reply('如果您需要查找图书请直接输入关键字,如:java(暂不支持中文)');
 		}else {
 			inputMsg = eventKey;
 		}
