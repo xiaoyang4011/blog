@@ -19,6 +19,18 @@ var wechatAPI = wechat(config.wechat.Token, function(req, res, next){
 			res.reply('暂未开放,敬请期待');
 		}else if(eventKey === 'find'){
 			res.reply('如果您需要查找图书请直接输入关键字,如:java(暂不支持中文)');
+		}else if(eventKey === 'joke'){
+			wechat_lib.get_joke(function(err, result){
+				if (err) {
+					res.reply('您的请求上天了');
+
+					return next();
+				}
+
+				res.reply(result);
+
+				return next();
+			});
 		}else {
 			inputMsg = eventKey;
 		}
