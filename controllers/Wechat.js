@@ -149,12 +149,21 @@ function createMenu(req, res){
 		})
 	;
 }
+/**
+ * 推送消息
+ * @param req
+ * @param res
+ */
+function pushMsg(req, res) {
+
+}
 
 _.extend(
 	module.exports,
 	{
 		wechatAPI       : wechatAPI,
 		getBook         : getBook,
-		createMenu      : createMenu
+		createMenu      : createMenu,
+		pushMsg         : pushMsg
 	}
 );
