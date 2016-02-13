@@ -2,3 +2,4 @@ _Store
 node_modules/
 .idea/
 config.js
+upload/
