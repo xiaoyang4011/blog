@@ -51,7 +51,7 @@ app.use(session({
 
 app.use(errorPageMiddleware.errorPage);
 app.use(log4js.connectLogger(logger, {level:log4js.levels.INFO}));
-app.use('/do*', csurf());
+app.use(/^\/(do|add)/, csurf());
 app.use(function (req, res, next) {
 	res.locals.csrf = req.csrfToken ? req.csrfToken() : '';
 	next();
