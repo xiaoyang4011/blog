@@ -124,9 +124,9 @@ function createMenu(req, res){
 				key : "every_day"
 			},
 			{
-				"name": "圈内新闻",
-				"type": "click",
-				"key": "news"
+				"name": "老黄历",
+				"type": "view",
+				"url" :"http://sandbox.runjs.cn/show/ydp3it7b/"
 			}
 		]
 	};
