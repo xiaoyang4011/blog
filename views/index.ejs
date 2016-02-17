@@ -79,6 +79,25 @@
            }
        }
     });
-
 </script>
+<script>
+    $(function(){
+        var slogan = $('#slogan');
+
+        slogan.typed(
+                {
+                    replaceBaseText: true,
+                    strings: [
+                        slogan.attr('data-text')
+                    ],
+                    showCursor: false,
+                    typeSpeed: 10,
+                    backSpeed: 20,
+                    backDelay: 100,
+                    cursorChar: "|"
+                }
+        );
+    });
+</script>
+
 <%- include bottom%>
