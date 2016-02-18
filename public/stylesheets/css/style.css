@@ -11,3 +11,10 @@
     text-align:right;
     margin-right: 25px;
 }
+.wechat {
+    position:absolute;
+    margin-left: 50px;
+    margin-top: 50px;
+    height: 150px;
+    width: 150px;
+}
