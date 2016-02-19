@@ -76,7 +76,10 @@ function doSave(req, res){
 		title = body.title || '',
 		content = body.content || '',
 		tags = body.tags,
-		aid = body.aid;
+		aid = body.aid,
+		fileMsg = req.file,
+		extra = new qiniu.io.PutExtra(),
+		token = uptoken.token();
 
 	if(!title || !content){
 		return res.render('blog/add');
@@ -88,24 +91,45 @@ function doSave(req, res){
 		tags : tags
 	};
 
-	if(aid){
-		Article.Model.update({aid : aid}, {$set: article}, function(err, result){
-			if(err){
-				return res.renderError('服务器错误');
+	new Seq()
+		.seq(function(){
+			var that = this;
+
+			qiniu.io.putFile(token, fileMsg.filename, fileMsg.path, extra, function(err, ret) {
+				if(err) {
+					return that(err);
+				}
+
+				return that(null, ret);
+			});
+		})
+		.seq(function(fileInfo){
+			var that = this;
+
+			article.image = fileInfo.url;
+
+			if(aid){
+				Article.Model.update({aid : aid}, {$set: article}, function(err){
+					if(err){
+						return that(err);
+					}
+
+					return res.redirect('/');
+				});
+			}else{
+				Article.Model.create(article, function(err){
+					if(err){
+						return that(err);
+					}
+
+					return res.redirect('/');
+				});
 			}
-
-			return res.redirect('/');
-		});
-	}else{
-		Article.Model.create(article, function(err){
-			if(err) {
-				return res.renderError('服务器错误');
-			}
-
-			return res.redirect('/');
-		});
-	}
-
+		})
+		.catch(function(err){
+			return res.renderError('服务器错误');
+		})
+	;
 }
 
 function edit(req, res){

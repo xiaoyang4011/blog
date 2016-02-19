@@ -6,7 +6,7 @@ var upload = require('./../lib/multer');
 
 router.get('/', Blog.index);
 router.get('/add', auth.userRequired, Blog.add);
-router.post('/do_save', auth.userRequired, Blog.doSave);
+router.post('/do_save', auth.userRequired, upload.single('image'), Blog.doSave);
 router.get('/detail', Blog.detail);
 router.get('/edit', auth.userRequired, Blog.edit);
 router.get('/about-me-edit', auth.userRequired, Blog.about_edit);

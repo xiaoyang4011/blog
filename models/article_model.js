@@ -57,6 +57,10 @@ var articleSchema = new Schema({
 		required : true,
 		default    : Date.now
 	},
+	image : {
+		type    : String,
+		required : false
+	},
 	pts : {
 		type       : Date,
 		required : true,
