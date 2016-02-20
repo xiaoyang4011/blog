@@ -106,7 +106,9 @@ function doSave(req, res){
 		.seq(function(fileInfo){
 			var that = this;
 
-			article.image = fileInfo.url;
+			var fileName = fileInfo.key || fileMsg.filename;
+
+			article.image = fileName;
 
 			if(aid){
 				Article.Model.update({aid : aid}, {$set: article}, function(err){
