@@ -95,6 +95,10 @@ function doSave(req, res){
 		.seq(function(){
 			var that = this;
 
+			if(!fileMsg){
+				return that();
+			}
+
 			qiniu.io.putFile(token, fileMsg.filename, fileMsg.path, extra, function(err, ret) {
 				if(err) {
 					return that(err);
@@ -106,7 +110,7 @@ function doSave(req, res){
 		.seq(function(fileInfo){
 			var that = this;
 
-			var fileName = fileInfo.key || fileMsg.filename;
+			var fileName = fileInfo && fileInfo.key || '';
 
 			article.image = fileName;
 
