@@ -121,7 +121,7 @@ function createMenu(req, res){
 			{
 				"type" : "click",
 				"name": "每日一句",
-				key : "every_day"
+				"key" : "every_day"
 			},
 			{
 				"name": "老黄历",
