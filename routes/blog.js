@@ -19,7 +19,5 @@ router.get('/upload', auth.userRequired, Blog.uploadFile);
 router.get('/uptoken', auth.userRequired, Blog.upToken);
 router.get('/file_list', auth.userRequired, Blog.FileList);
 router.post('/record_file', auth.userRequired, Blog.recordFile);
-router.get('/upload_test', auth.userRequired, Blog.uploadTest);
-router.post('/do_upload_test', auth.userRequired, upload.single('image'), Blog.doUploadTest);
 
 module.exports = router;
