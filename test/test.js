@@ -3,6 +3,7 @@ var supertest = require('supertest');
 var express = require('express');
 var app = express();
 var request = supertest(app);
+var common = require('./../common/common');
 
 
 describe('test web home', function(){
@@ -25,4 +26,14 @@ describe('test web home', function(){
 					done();
 			});
 	})
+
+	it('test time format function', function(done){
+		var without_html_code = '登录';
+
+		var code = common.removeHTMLTag('<td><a href="/login">登录</a></td>');
+
+		should.equal(without_html_code, code);
+
+		done();
+	});
 });
