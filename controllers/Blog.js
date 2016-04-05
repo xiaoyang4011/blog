@@ -1,7 +1,6 @@
 var _ = require('lodash'),
 	Article = require('./../models/article_model'),
 	Tags = require('./../models/tags_model'),
-	Seq = require('seq'),
 	config = require('./../config'),
 	qiniu = require('./../lib/qiniu'),
 	moment = require('moment'),
@@ -121,77 +120,56 @@ function edit(req, res) {
 		return res.renderError('您请求的资源不见鸟~');
 	}
 
-	new Seq()
-		.seq(function () {
-			Tags.Model.find({st: 1}, this);
-		})
-		.seq(function (tags) {
-			Article.Model.findOne({aid: +aid}, function (err, article) {
-				if (err) {
-					return res.renderError('您请求的资源不见鸟~');
-				}
+	co(function *(){
+		var result = yield [
+			Tags.findAsync({st : 1}),
+			Article.findOneAsync({aid : +aid})
+		];
 
-				return res.render('blog/edit', {
-					article: article,
-					tags: tags
-				});
-			});
-		})
-		.catch(function (err) {
-			return res.renderError('服务器错误');
-		})
-	;
+		return res.render('blog/edit', {
+			article: result[0],
+			tags: result[1]
+		});
+	}).catch(function(err){
+		console.log(err);
+		return res.renderError('服务器错误');
+	});
 }
 
 function about_edit(req, res) {
-	new Seq()
-		.seq(function () {
-			Article.Model.findOne({type: 200}).sort({cts: -1}).exec(this);
-		})
-		.seq(function (article) {
-			var that = this;
 
-			if (article) {
-				return that(null, article);
-			}
+	co(function *(){
+		var aboutMe = yield Article.findOneAsync({type: 200}).sort({cts: -1});
 
-			Article.Model.create({
-				title: '关于',
-				content: '关于',
-				type: 200
-			}, this);
-		})
-		.seq(function (article) {
-			return res.render('blog/show', {article: article});
-		})
-		.catch(function (err) {
-			return res.renderError(err);
-		})
-	;
+		if (!aboutMe) {
+			aboutMe = yield Article.createAsync({title: '关于', content: '关于', type: 200});
+		}
+
+		return res.render('blog/show', {article: aboutMe});
+	}).catch(function(err){
+		return res.renderError(err);
+	});
 }
 
 function about_me(req, res) {
-	Article.Model.findOne({type: 200}).sort({cts: -1})
-		.exec(function (err, article) {
-			if (err) {
-				return res.renderError('服务器错误');
-			}
+	Article.findOneAsync({type : 200}).sort({cts: -1}).then(function(article){
+		if (!article) {
+			return res.renderError('未找到个人页');
+		}
 
-			if (!article) {
-				return res.renderError('未找到个人页');
-			}
-
-			return res.render('blog/show', {article: article});
-		});
+		return res.render('blog/show', {article: article});
+	}).catch(function(err){
+		console.log(err);
+		return res.render('blog/show', {article: article});
+	});
 }
 
 function tags(req, res) {
-	Tags.Model.find(function (err, tags) {
-		if (err) {
-			return res.renderError('服务器错误');
-		}
-
+	Tags.findAsync().then(function(tags){
 		return res.render('blog/tags', {tags: tags});
+	}).catch(function(err){
+		console.log(err);
+		return res.renderError('服务器错误');
 	});
 }
 
@@ -227,23 +205,17 @@ function save_tag(req, res) {
 		st: status
 	};
 
-	if (tid) {
-		Tags.Model.update({tid: tid}, {$set: Tag}, function (err) {
-			if (err) {
-				return res.renderError('服务器错误');
-			}
+	co(function *(){
+		if(tid){
+			yield Tags.updateAsync({tid: tid}, {$set: Tag});
+		}else{
+			yield Tags.createAsync(Tag);
+		}
 
-			return res.redirect('/tags');
-		});
-	} else {
-		Tags.Model.create(Tag, function (err) {
-			if (err) {
-				return res.renderError('服务器错误');
-			}
-
-			return res.redirect('/tags');
-		});
-	}
+		return res.redirect('/tags');
+	}).catch(function(err){
+		return res.renderError('服务器错误');
+	});
 }
 
 function edit_tag(req, res) {
@@ -256,12 +228,10 @@ function edit_tag(req, res) {
 		return res.renderError('您请求的资源不见鸟~');
 	}
 
-	Tags.Model.findOne({tid: +tid}, function (err, tag) {
-		if (err) {
-			return res.renderError('您请求的资源不见鸟~');
-		}
-
+	Tags.findOneAsync({tid : +tid}).then(function(tag){
 		return res.render('blog/edit_tag', {tag: tag});
+	}).catch(function(err){
+		return res.renderError('您请求的资源不见鸟~');
 	});
 }
 /**
