@@ -6,7 +6,10 @@ var _ = require('lodash'),
 	qiniu = require('./../lib/qiniu'),
 	moment = require('moment'),
 	uptoken = new qiniu.rs.PutPolicy(config.qiniu.Bucket_Name),
-	trimBody = require('trim-body');
+	trimBody = require('trim-body'),
+	co = require('co'),
+	Promise = require('bluebird');
+
 /**
  * 首页
  * @param req
@@ -18,12 +21,20 @@ function index(req, res) {
 
 	query.page = query.page || 1;
 
-	Article.Model.list_by_page(query, function(err, ArticleInfo){
-		if(err) {
-			return res.renderError('服务器错误');
-		}
+	co(function *() {
+
+		var result = yield Article.list_by_page(query);
+
+		var ArticleInfo = {
+			articles: result[1],
+			page: query.page,
+			next: (query.page * config.perpage_limit >= result[0]) ? true : false
+		};
 
 		return res.render('index', ArticleInfo);
+	}).catch(function (err) {
+		console.log(err);
+		return res.renderError('服务器错误');
 	});
 }
 /**
@@ -32,24 +43,18 @@ function index(req, res) {
  * @param res
  * @returns view
  */
-function detail(req, res){
+function detail(req, res) {
 	var query = req.query,
 		aid = query.id || 0;
 
-	if(!aid) {
+	if (!aid) {
 		return res.renderError('内容不存在');
 	}
 
-	Article.Model.findOne({aid : aid}, function(err, article){
-		if(err) {
-			return res.renderError('服务器错误');
-		}
-
-		if(!article) {
-			return res.renderError('内容不存在');
-		}
-
-		return res.render('blog/show', {article : article});
+	Article.findOneAsync({aid: aid}).then(function(article){
+		return res.render('blog/show', {article: article});
+	}).catch(function(err){
+		return res.renderError('服务器错误');
 	});
 }
 
@@ -59,17 +64,15 @@ function detail(req, res){
  * @param req
  * @return view
  */
-function add(req, res){
-	Tags.Model.find({st : 1}, function(err, tags){
-		if(err){
-			return res.renderError('服务器错误');
-		}
-
-		return res.render('blog/add', {tags : tags});
+function add(req, res) {
+	Tags.findAsync({st : 1}).then(function(tags){
+		return res.render('blog/add', {tags: tags});
+	}).catch(function(err){
+		return res.renderError('服务器错误');
 	});
 }
 
-function doSave(req, res){
+function doSave(req, res) {
 	trimBody(req.body);
 
 	var body = req.body,
@@ -79,115 +82,87 @@ function doSave(req, res){
 		aid = body.aid,
 		fileMsg = req.file,
 		extra = new qiniu.io.PutExtra(),
-		token = uptoken.token();
+		token = uptoken.token(),
+		uploadFile = Promise.promisify(qiniu.io.putFile, qiniu.io);
 
-	if(!title || !content){
+	if (!title || !content) {
 		return res.render('blog/add');
 	}
 
 	var article = {
-		title : title,
-		content : content,
-		tags : tags
+		title: title,
+		content: content,
+		tags: tags
 	};
 
-	new Seq()
-		.seq(function(){
-			var that = this;
+	co(function *(){
+		var fileInfo = yield uploadFile(token, fileMsg.filename, fileMsg.path, extra);
 
-			if(!fileMsg){
-				return that();
-			}
+		article.image = _.get(fileInfo, 'key', '');
 
-			qiniu.io.putFile(token, fileMsg.filename, fileMsg.path, extra, function(err, ret) {
-				if(err) {
-					return that(err);
-				}
+		if(aid){
+			yield Article.updateAsync({aid: aid}, {$set: article});
+		}else{
+			yield Article.createAsync(article);
+		}
 
-				return that(null, ret);
-			});
-		})
-		.seq(function(fileInfo){
-			var that = this;
-
-			var fileName = fileInfo && fileInfo.key || '';
-
-			article.image = fileName;
-
-			if(aid){
-				Article.Model.update({aid : aid}, {$set: article}, function(err){
-					if(err){
-						return that(err);
-					}
-
-					return res.redirect('/');
-				});
-			}else{
-				Article.Model.create(article, function(err){
-					if(err){
-						return that(err);
-					}
-
-					return res.redirect('/');
-				});
-			}
-		})
-		.catch(function(err){
-			return res.renderError('服务器错误');
-		})
-	;
+		return res.redirect('/');
+	}).catch(function(err){
+		console.log(err);
+		return res.renderError('服务器错误');
+	});
 }
 
-function edit(req, res){
+function edit(req, res) {
 	var query = req.query,
 		aid = query.aid;
 
-	if(!aid){
+	if (!aid) {
 		return res.renderError('您请求的资源不见鸟~');
 	}
 
 	new Seq()
-		.seq(function(){
-			Tags.Model.find({st : 1}, this);
+		.seq(function () {
+			Tags.Model.find({st: 1}, this);
 		})
-		.seq(function(tags){
-			Article.Model.findOne({aid : +aid}, function(err, article){
-				if(err){
+		.seq(function (tags) {
+			Article.Model.findOne({aid: +aid}, function (err, article) {
+				if (err) {
 					return res.renderError('您请求的资源不见鸟~');
 				}
 
 				return res.render('blog/edit', {
-					article : article,
-					tags : tags
+					article: article,
+					tags: tags
 				});
 			});
 		})
-		.catch(function(err){
+		.catch(function (err) {
 			return res.renderError('服务器错误');
 		})
 	;
 }
 
-function about_edit(req, res){
+function about_edit(req, res) {
 	new Seq()
-		.seq(function(){
-			Article.Model.findOne({type : 200}).sort({cts : -1}).exec(this);
+		.seq(function () {
+			Article.Model.findOne({type: 200}).sort({cts: -1}).exec(this);
 		})
-		.seq(function(article){
+		.seq(function (article) {
 			var that = this;
 
-			if(article){
+			if (article) {
 				return that(null, article);
 			}
 
 			Article.Model.create({
-				title : '关于',
-				content : '关于',
-				type : 200
+				title: '关于',
+				content: '关于',
+				type: 200
 			}, this);
 		})
-		.seq(function(article){
-			return res.render('blog/show', {article : article});
+		.seq(function (article) {
+			return res.render('blog/show', {article: article});
 		})
 		.catch(function (err) {
 			return res.renderError(err);
@@ -195,28 +170,28 @@ function about_edit(req, res){
 	;
 }
 
-function about_me(req, res){
-	Article.Model.findOne({type : 200}).sort({cts : -1})
-		.exec(function(err, article){
-			if(err){
+function about_me(req, res) {
+	Article.Model.findOne({type: 200}).sort({cts: -1})
+		.exec(function (err, article) {
+			if (err) {
 				return res.renderError('服务器错误');
 			}
 
-			if(!article){
+			if (!article) {
 				return res.renderError('未找到个人页');
 			}
 
-			return res.render('blog/show', {article : article});
-	});
+			return res.render('blog/show', {article: article});
+		});
 }
 
-function tags(req, res){
-	Tags.Model.find(function(err, tags){
-		if(err) {
+function tags(req, res) {
+	Tags.Model.find(function (err, tags) {
+		if (err) {
 			return res.renderError('服务器错误');
 		}
 
-		return res.render('blog/tags', {tags : tags});
+		return res.render('blog/tags', {tags: tags});
 	});
 }
 
@@ -226,7 +201,7 @@ function tags(req, res){
  * @param res
  * @returns {*|String}
  */
-function add_tag(req, res){
+function add_tag(req, res) {
 	return res.render('blog/add_tag');
 }
 
@@ -235,7 +210,7 @@ function add_tag(req, res){
  * @param req
  * @param res
  */
-function save_tag(req, res){
+function save_tag(req, res) {
 	trimBody(req.body);
 
 	var body = req.body,
@@ -243,26 +218,26 @@ function save_tag(req, res){
 		status = body.status || 0,
 		tid = body.tid;
 
-	if(!name){
+	if (!name) {
 		return res.renderError('名字不能为空');
 	}
 
 	var Tag = {
-		name : name,
-		st : status
+		name: name,
+		st: status
 	};
 
-	if(tid){
-		Tags.Model.update({tid : tid}, {$set: Tag}, function(err){
-			if(err){
+	if (tid) {
+		Tags.Model.update({tid: tid}, {$set: Tag}, function (err) {
+			if (err) {
 				return res.renderError('服务器错误');
 			}
 
 			return res.redirect('/tags');
 		});
-	}else{
-		Tags.Model.create(Tag, function(err){
-			if(err) {
+	} else {
+		Tags.Model.create(Tag, function (err) {
+			if (err) {
 				return res.renderError('服务器错误');
 			}
 
@@ -271,22 +246,22 @@ function save_tag(req, res){
 	}
 }
 
-function edit_tag(req, res){
+function edit_tag(req, res) {
 	trimBody(req.query);
 
 	var query = req.query,
 		tid = query.tid;
 
-	if(!tid){
+	if (!tid) {
 		return res.renderError('您请求的资源不见鸟~');
 	}
 
-	Tags.Model.findOne({tid : +tid}, function(err, tag){
-		if(err){
+	Tags.Model.findOne({tid: +tid}, function (err, tag) {
+		if (err) {
 			return res.renderError('您请求的资源不见鸟~');
 		}
 
-		return res.render('blog/edit_tag', {tag : tag});
+		return res.render('blog/edit_tag', {tag: tag});
 	});
 }
 /**
@@ -295,11 +270,11 @@ function edit_tag(req, res){
  * @param res
  * @returns {*|String}
  */
-function uploadFile(req, res){
+function uploadFile(req, res) {
 
-	return res.render('upload/index',{
-		domain : config.qiniu.Domain,
-		uptoken_url : config.qiniu.Uptoken_Url
+	return res.render('upload/index', {
+		domain: config.qiniu.Domain,
+		uptoken_url: config.qiniu.Uptoken_Url
 	});
 }
 
@@ -327,21 +302,21 @@ function upToken(req, res) {
  * @param res
  * @constructor
  */
-function FileList(req, res){
-	qiniu.rsf.listPrefix(config.qiniu.Bucket_Name, '', null, 10, function(err, result){
-		if(err) {
+function FileList(req, res) {
+	qiniu.rsf.listPrefix(config.qiniu.Bucket_Name, '', null, 10, function (err, result) {
+		if (err) {
 			return res.renderError('服务器出现错误');
 		}
 
 		var file_list = result && result.items || [],
-			files = _.map(file_list, function(file){
-			file.fsize = ((file.fsize) / 1024).toFixed(2) + 'KB';
-			file.putTime = moment(parseInt(file.putTime/10000)).format('YYYY-MM-DD HH:mm');
+			files = _.map(file_list, function (file) {
+				file.fsize = ((file.fsize) / 1024).toFixed(2) + 'KB';
+				file.putTime = moment(parseInt(file.putTime / 10000)).format('YYYY-MM-DD HH:mm');
 
-			return file;
-		});
+				return file;
+			});
 
-		return res.render('upload/file_list', {files : files});
+		return res.render('upload/file_list', {files: files});
 	});
 }
 
@@ -351,24 +326,24 @@ function FileList(req, res){
  * @param res
  * @returns {*}
  */
-function recordFile(req, res){
+function recordFile(req, res) {
 	var body = req.body;
 
-	return res.json({code : 0});
+	return res.json({code: 0});
 }
 
-function uploadTest(req, res){
+function uploadTest(req, res) {
 	return res.render('upload/upload');
 }
 
 
-function doUploadTest(req, res){
+function doUploadTest(req, res) {
 	var fileMsg = req.file,
 		extra = new qiniu.io.PutExtra(),
 		token = uptoken.token();
 
-	qiniu.io.putFile(token, fileMsg.filename, fileMsg.path, extra, function(err, ret) {
-		if(err) {
+	qiniu.io.putFile(token, fileMsg.filename, fileMsg.path, extra, function (err, ret) {
+		if (err) {
 			return res.renderError('服务器出现错误');
 		}
 
@@ -379,22 +354,22 @@ function doUploadTest(req, res){
 _.extend(
 	module.exports,
 	{
-		index           : index,
-		add             : add,
-		doSave          : doSave,
-		detail          : detail,
-		edit            : edit,
-		about_edit      : about_edit,
-		about_me        : about_me,
-		tags            : tags,
-		add_tag         : add_tag,
-		save_tag        : save_tag,
-		edit_tag        : edit_tag,
-		uploadFile      : uploadFile,
-		upToken         : upToken,
-		FileList        : FileList,
-		recordFile      : recordFile,
-		uploadTest      : uploadTest,
-		doUploadTest    : doUploadTest
+		index: index,
+		add: add,
+		doSave: doSave,
+		detail: detail,
+		edit: edit,
+		about_edit: about_edit,
+		about_me: about_me,
+		tags: tags,
+		add_tag: add_tag,
+		save_tag: save_tag,
+		edit_tag: edit_tag,
+		uploadFile: uploadFile,
+		upToken: upToken,
+		FileList: FileList,
+		recordFile: recordFile,
+		uploadTest: uploadTest,
+		doUploadTest: doUploadTest
 	}
 );

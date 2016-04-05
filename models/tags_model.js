@@ -2,7 +2,7 @@ var mongoose = require('../lib/mongoose'),
 	Schema = mongoose.Schema,
 	COLLECTION_NAME = 'tags',
 	autoIncrement = require('mongoose-auto-increment'),
-	_ = require('lodash');
+	Promise = require('bluebird');
 
 var tagSchema = new Schema({
 	//唯一自增ID
@@ -45,9 +45,9 @@ tagSchema.virtual('st_display').get(function(){
 	return (this.st) ? '开启' : '关闭';
 });
 
-_.extend(
-	module.exports,
-	{
-		Model: mongoose.model(COLLECTION_NAME, tagSchema)
-	}
-);
+var Tag = mongoose.model(COLLECTION_NAME, tagSchema);
+
+Promise.promisifyAll(Tag);
+Promise.promisifyAll(Tag.prototype);
+
+module.exports = Tag;

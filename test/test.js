@@ -25,7 +25,7 @@ describe('test web home', function(){
 					should.not.exist(err);
 					done();
 			});
-	})
+	});
 
 	it('test time format function', function(done){
 		var without_html_code = '登录';

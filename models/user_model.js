@@ -2,7 +2,7 @@ var mongoose = require('../lib/mongoose'),
 	Schema = mongoose.Schema,
 	COLLECTION_NAME = 'users',
 	autoIncrement = require('mongoose-auto-increment'),
-	_ = require('lodash');
+	Promise = require('bluebird');
 
 var userSchema = new Schema({
 	//唯一自增ID
@@ -44,9 +44,9 @@ userSchema.plugin(autoIncrement.plugin, {
 	startAt : 1000
 });
 
-_.extend(
-	module.exports,
-	{
-		Model: mongoose.model(COLLECTION_NAME, userSchema)
-	}
-);
+var User = mongoose.model(COLLECTION_NAME, userSchema);
+
+Promise.promisifyAll(User);
+Promise.promisifyAll(User.prototype);
+
+module.exports = User;

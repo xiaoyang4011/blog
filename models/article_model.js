@@ -5,21 +5,23 @@ var mongoose = require('../lib/mongoose'),
 	_ = require('lodash'),
 	common = require('../common/common'),
 	config = require('../config'),
-	Seq = require('seq'),
 	moment = require('moment'),
-	hljs = require('highlight.js');
+	hljs = require('highlight.js'),
+	Promise = require('bluebird');
 
 var md = require('markdown-it')({
 	highlight: function (str, lang) {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
 				return hljs.highlight(lang, str).value;
-			} catch (__) {}
+			} catch (__) {
+			}
 		}
 
 		try {
 			return hljs.highlightAuto(str).value;
-		} catch (__) {}
+		} catch (__) {
+		}
 
 		return ''; // use external default escaping
 	}
@@ -31,40 +33,40 @@ var articleSchema = new Schema({
 		type: Number,
 		required: true
 	},
-	title : {
-		type       : String,
-		required : true
+	title: {
+		type: String,
+		required: true
 	},
-	tags : {
-		type : Array
+	tags: {
+		type: Array
 	},
-	content : {
-		type       : String,
-		required : true
+	content: {
+		type: String,
+		required: true
 	},
-	st : {
-		type    : Number,
-		required : true,
-		default : 0
+	st: {
+		type: Number,
+		required: true,
+		default: 0
 	},
-	type : {
-		type    : Number,
-		required : true,
-		default : 100
+	type: {
+		type: Number,
+		required: true,
+		default: 100
 	},
-	cts : {
-		type       : Date,
-		required : true,
-		default    : Date.now
+	cts: {
+		type: Date,
+		required: true,
+		default: Date.now
 	},
-	image : {
-		type    : String,
-		required : false
+	image: {
+		type: String,
+		required: false
 	},
-	pts : {
-		type       : Date,
-		required : true,
-		default    : Date.now
+	pts: {
+		type: Date,
+		required: true,
+		default: Date.now
 	}
 });
 
@@ -72,24 +74,24 @@ articleSchema.index({aid: 1});
 articleSchema.index({cts: 1});
 
 articleSchema.plugin(autoIncrement.plugin, {
-	model   : 'articles',
-	field   : 'aid',
-	startAt : 1
+	model: 'articles',
+	field: 'aid',
+	startAt: 1
 });
 
 //-------------------虚拟属性-----------------------------
 
 //文章内容 markdown->html
-articleSchema.virtual('content_display').get(function(){
+articleSchema.virtual('content_display').get(function () {
 	return md.render(this.content);
 });
 
 //小标题
-articleSchema.virtual('content_mini').get(function(){
+articleSchema.virtual('content_mini').get(function () {
 	return common.removeHTMLTag(md.render(this.content)).substr(0, 100);
 });
 
-articleSchema.virtual('cts_limit_display').get(function(){
+articleSchema.virtual('cts_limit_display').get(function () {
 	return moment(this.cts).fromNow();
 });
 
@@ -99,44 +101,26 @@ articleSchema.virtual('cts_limit_display').get(function(){
  * @param page
  * @param cb
  */
-articleSchema.statics.list_by_page = function(query, cb){
+articleSchema.statics.list_by_page = function (query) {
 	var Article = this,
-		sort = {cts : -1},
-		perpage = query.page * config.perpage_limit,
-		skip = (query.page-1) * config.perpage_limit,
-		where = {type : 100};
+		sort = {cts: -1},
+		skip = (query.page - 1) * config.perpage_limit,
+		where = {type: 100};
 
-	if(query.tag){
+	if (query.tag) {
 		where.tags = query.tag;
 		config.perpage_limit = 1000000;
-
 	}
 
-	new Seq()
-		.seq('count', function () {
-			Article.count(where, this);
-		})
-		.seq(function () {
-			Article.find(where).sort(sort).skip(skip).limit(config.perpage_limit).exec(this);
-		})
-		.seq(function (articles) {
-			var count = this.vars.count;
-
-			return cb(null, {
-				articles : articles,
-				page     : query.page,
-				next     : (perpage >= count) ? true : false
-			});
-		})
-		.catch(function (err) {
-			return cb(err);
-		})
-	;
+	return [
+		Article.count(where).exec(),
+		Article.find(where).sort(sort).skip(skip).limit(config.perpage_limit).exec()
+	];
 };
 
-_.extend(
-	module.exports,
-	{
-		Model: mongoose.model(COLLECTION_NAME, articleSchema)
-	}
-);
+var Article = mongoose.model(COLLECTION_NAME, articleSchema);
+
+Promise.promisifyAll(Article);
+Promise.promisifyAll(Article.prototype);
+
+module.exports = Article;

@@ -24,14 +24,7 @@ function do_login(req, res){
 		name = body.name,
 		pass = body.password;
 
-	User.Model.findOne({
-		name : name,
-		pass : pass
-	},function(err, user){
-		if(err){
-			return res.renderError('服务器错误');
-		}
-
+	User.findOneAsync({name : name, pass : pass}).then(function(user){
 		if(!user){
 			return res.renderError('账号密码不匹配');
 		}
@@ -39,6 +32,9 @@ function do_login(req, res){
 		req.session.user = user;
 
 		return res.redirect('/');
+	}).catch(function(err){
+		console.log(err);
+		return res.renderError('服务器错误');
 	});
 }
 
@@ -81,12 +77,11 @@ function do_reg(req, res){
 		pass : password
 	};
 
-	User.Model.create(save_date, function(err){
-		if(err){
-			return res.renderError('服务器错误');
-		}
-
+	User.createAsync(save_date).then(function(){
 		return res.redirect('/');
+	}).catch(function(err){
+		console.log(err);
+		return res.renderError('服务器错误');
 	});
 }
 

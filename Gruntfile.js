@@ -12,8 +12,10 @@ module.exports = function(grunt) {
 			],
 			options: {
 				globals: {
-					exports: true
-				}
+					exports: true,
+					Promise: true
+				},
+				esnext :true
 			}
 		},
 		jscs: {
