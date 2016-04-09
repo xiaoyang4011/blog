@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('lodash'),
 	User = require('./../models/user_model'),
 	config =  require('./../config'),

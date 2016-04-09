@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('lodash'),
 	Article = require('./../models/article_model'),
 	Tags = require('./../models/tags_model'),
@@ -95,9 +97,10 @@ function doSave(req, res) {
 	};
 
 	co(function *(){
-		var fileInfo = yield uploadFile(token, fileMsg.filename, fileMsg.path, extra);
-
-		article.image = _.get(fileInfo, 'key', '');
+		if(fileMsg && fileMsg.filename){
+			var fileInfo = yield uploadFile(token, fileMsg.filename, fileMsg.path, extra);
+			article.image = _.get(fileInfo, 'key', '');
+		}
 
 		if(aid){
 			yield Article.updateAsync({aid: aid}, {$set: article});
@@ -127,8 +130,8 @@ function edit(req, res) {
 		];
 
 		return res.render('blog/edit', {
-			article: result[0],
-			tags: result[1]
+			tags: result[0],
+			article: result[1]
 		});
 	}).catch(function(err){
 		console.log(err);
@@ -160,7 +163,7 @@ function about_me(req, res) {
 		return res.render('blog/show', {article: article});
 	}).catch(function(err){
 		console.log(err);
-		return res.render('blog/show', {article: article});
+		return res.renderError('服务器错误');
 	});
 }
 

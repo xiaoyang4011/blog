@@ -2,7 +2,7 @@
  * This is a wrapper of request.
  * Reference: https://github.com/mikeal/request
  */
-
+'use strict';
 var _ = require('lodash'),
 	request = require('request'),
 	config = require('./../config');

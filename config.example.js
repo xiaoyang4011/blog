@@ -1,3 +1,5 @@
+'use strict';
+
 var config = {
 	// mongodb 配置
 	hostname: 'localhost',
