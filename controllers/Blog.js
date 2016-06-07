@@ -139,7 +139,7 @@ function edit(req, res) {
 function about_edit(req, res) {
 
 	co(function *(){
-		var aboutMe = yield Article.findOneAsync({type: 200}).sort({cts: -1});
+		var aboutMe = yield Article.findOneAsync({type: 200});
 
 		if (!aboutMe) {
 			aboutMe = yield Article.createAsync({title: '关于', content: '关于', type: 200});
@@ -152,7 +152,7 @@ function about_edit(req, res) {
 }
 
 function about_me(req, res) {
-	Article.findOneAsync({type : 200}).sort({cts: -1}).then(function(article){
+	Article.findOneAsync({type : 200}).then(function(article){
 		if (!article) {
 			return res.renderError('未找到个人页');
 		}
