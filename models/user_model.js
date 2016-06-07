@@ -1,3 +1,5 @@
+'use strict';
+
 var mongoose = require('../lib/mongoose'),
 	Schema = mongoose.Schema,
 	COLLECTION_NAME = 'users',

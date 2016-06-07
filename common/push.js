@@ -1,3 +1,5 @@
+'use strict';
+
 var User       = require('../proxy/user');
 var Message    = require('../proxy/message');
 var JPush      = require("jpush-sdk");

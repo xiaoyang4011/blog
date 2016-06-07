@@ -1,3 +1,5 @@
+'use strict';
+
 var bcrypt = require('bcryptjs');
 var moment = require('moment');
 

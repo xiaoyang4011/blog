@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
@@ -13,9 +15,13 @@ module.exports = function(grunt) {
 			options: {
 				globals: {
 					exports: true,
-					Promise: true
+					Promise: true,
+					require: true,
+					module : true,
+					console : true
 				},
-				esnext :true
+				esnext :true,
+				node: true,
 			}
 		},
 		jscs: {

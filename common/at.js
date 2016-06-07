@@ -8,6 +8,7 @@
 /**
  * Module dependencies.
  */
+'use strict';
 
 var User       = require('../proxy').User;
 var Message    = require('./message');
