@@ -98,6 +98,10 @@ function logout(req, res){
 	res.redirect('/');
 }
 
+function resume(req, res) {
+    return res.render('user/resume');
+}
+
 _.extend(
 	module.exports,
 	{
@@ -105,6 +109,7 @@ _.extend(
 		do_login    : do_login,
 		reg         : reg,
 		do_reg      : do_reg,
-		logout      : logout
+		logout      : logout,
+    resume      : resume
 	}
 );

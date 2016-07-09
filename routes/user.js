@@ -10,5 +10,6 @@ router.post('/reg', User.do_reg);
 router.get('/login', User.login);
 router.post('/login', User.do_login);
 router.post('/logout', auth.userRequired, User.logout);
+router.get('/resume', User.resume);
 
 module.exports = router;

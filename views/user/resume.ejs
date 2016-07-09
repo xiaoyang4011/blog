@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>刘晓阳的简历</title>
+    <meta name="description" content="我是一个爱运动、爱骑行、Enjoy coding的服务端工程师。喜欢Nodejs，崇拜tj大神，也喜欢研究前端技术，立志成为Full Stack Engineer">
+    <meta name="keywords" content="刘晓阳,Shawn,Nodejs,工作,简历">
+    <link rel="stylesheet" href="stylesheets/css/style.min.css">
+    <link rel="stylesheet" href="stylesheets/css/fontello.min.css">
+</head>
+<body>
+    <aside>
+        <ul>
+            <li>
+                <a href="http://7xw6bg.com1.z0.glb.clouddn.com/%E5%88%98%E6%99%93%E9%98%B3%E7%9A%84%E7%AE%80%E5%8E%86.pdf" target="_blank">PDF 下载</a>
+            </li>
+            <li>
+                <a href="http://www.7csa.com" target="_blank">Blog</a>
+            </li>
+            <li>
+                <a href="https://github.com/xiaoyang4011" target="_blank">GitHub</a>
+            </li>
+            <li>
+                <a href="https://github.com/xiaoyang4011/ppt" target="_blank">技术分享</a>
+            </li>
+        </ul>
+    </aside>
+    <div class="container">
+        <div class="sidebar">
+            <div class="title">
+                <img src="images/avatar.png">
+                <h1>刘晓阳的简历</h1>
+                <h2>Always yield to the Hands-On Imperative --The Hacker Ethic</h2>
+            </div>
+            <ul class="side-info">
+                <li class="someRight">
+                    <dt><i class="icon-bookmark"></i>Contact. 联系方式</dt>
+                    <dd><i class="icon-phone-1"></i>Phone: 18500891534</dd>
+                    <dd><i class="icon-mail-alt"></i>Email: <a href="mailto:lxy@7csa.com" target="_blank">lxy@7csa.com</a></dd>
+                    <dd><i class="icon-wechat"></i>WeChat: xiaoyang322</dd>
+                </li>
+                <li class="someRight">
+                    <dt><i class="icon-bookmark"></i>Application. 应聘岗位</dt>
+                    <dd>Nodejs工程师</dd>
+                </li>
+                <li class="skill">
+                    <dt><i class="icon-bookmark"></i>Tech. 技能点</dt>
+                    <dd>
+                        <div class="skill-name">JavaScript</div>
+                        <div class="skill-bar-wrap">
+                            <div class="skill-bar" style="width: 85%"></div>
+                        </div>
+                    </dd>
+                    <dd>
+                        <div class="skill-name">Nodejs</div>
+                        <div class="skill-bar-wrap">
+                            <div class="skill-bar" style="width: 85%"></div>
+                        </div>
+                    </dd>
+                    <dd>
+                        <div class="skill-name">PHP</div>
+                        <div class="skill-bar-wrap">
+                            <div class="skill-bar" style="width: 70%"></div>
+                        </div>
+                    </dd>
+                    <dd>
+                        <div class="skill-name">Java</div>
+                        <div class="skill-bar-wrap">
+                            <div class="skill-bar" style="width: 70%"></div>
+                        </div>
+                    </dd>
+                    <dd>
+                        <div class="skill-name">Vue</div>
+                        <div class="skill-bar-wrap">
+                            <div class="skill-bar" style="width: 70%"></div>
+                        </div>
+                    </dd>
+                </li>
+            </ul>
+            <div class="note">
+                <p>我是一个爱运动、爱骑行、Enjoy coding的服务端工程师。</p>
+                <p>喜欢Nodejs，崇拜tj大神，也喜欢研究前端技术，立志成为Full Stack Engineer</p>
+            </div>
+        </div>
+        <div class="main">
+            <ul class="main-info">
+                <li class="someRight">
+                    <dt><i class="icon-bookmark"></i>Basic info. 基本信息</dt>
+                    <dd><span>个人信息:</span> 刘晓阳 / 男 / 25岁</dd>
+                    <dd><span>教育经历:</span> 本科 / 中国石油大学计算机系</dd>
+                    <dd><span>英语水平:</span> CET-4</dd>
+                    <dd><span>Blog:</span> <a href="https://www.7csa.com" target="_blank">www.7csa.com</a></dd>
+                    <dd><span>GitHub:</span> <a href="https://github.com/xiaoyang4011" target="_blank">www.github.com/xiaoyang4011</a></dd>
+                </li>
+                <li>
+                    <dt><i class="icon-bookmark"></i>Experience. 项目与工作经验</dt>
+                    <h3>北京云鸟科技有限公司（2015.5 - 至今）</h3>
+                    <ul class="exp">
+                        <li>
+                            <div class="circle"></div>
+                            <h4>云鸟管理系统</h4>
+                            <p>参与 beeper 后端管理系统开发，Tech: Nodejs, Express, Mongoose, Async, Mocha等..</p>
+                            <p>正式工作参加的一个项目，收获颇丰，从基本的node，git，linux、到踩过的各种爽歪歪的坑之后都有很大收获。</p>
+                            <p>大坑1: TypeError: Cannot read property 'name' of undefined，在回调函数内如果你去一个undefined里去取东西就会导致你的进程crash掉，
+                              用node写代码需谨慎。lodash 的_.get or (person && person.name)
+                            </p>
+                            <p>大坑2:之前使用的处理异步流程控制库是Seq(类似Promise的链式写法)，当一个流里有两个err 抛出来，这个库会返回两次err，
+                              导致处理异常的地儿直接return了2次res 导致【Can't set headers after they are sent】,进而使进程退出，具体内容我在公司的技术分享的PPT里有</p>
+                            <p>大坑3:uncaughtException处理方式，之前处理错误的方式好比你被别人捅了一刀，本来该死掉的，你却扛着刀捂着肚子往前跑、、具体PPT里有聊。。。。
+                            </p>
+                            <p>
+                              大坑:N 坑，是永远也填不平的、、😭
+                            </p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>云鸟Driver Api</h4>
+                            <p>很荣幸能够经历到公司架构更新，从开始创业公司all in one 到拆库拆表，分模块的技术更新。</p>
+                            <p>模块拆分后按照业务单元拆分成不通的model，处于一些原因有点模块采用PHP去写，模块之前http的方式去调用，我负责司机端APP的api服务</p>
+                            <p>技术方案升级</p>
+                            <p>1:升级node版本，从v0.10.28 升级至 v4.4.X LTS</p>
+                            <p>2:异步流程处理方面使用Promise/A+(bluebird) + co 处理请求之前的并行和串行</p>
+                            <p>3:系统内部使用node_modules 进行公有部分拆分（还有别的app）</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>Yn TF</h4>
+                            <p>之前拿ThinkPHP，Yii写过一些小玩意儿，公司用的比较🔥的laravel，好奇心驱使，写了一部分运力和补贴相关的code</p>
+                            <p>PS:另拿laravel写了一个论坛社区站点，第一次部署到双十一买的阿里云的ECS上，期间还遭到一次肉鸡，对Linux又是一顿脑补</p>
+                        </li>
+                    </ul>
+                    <h3>个人项目</h3>
+                    <ul class="exp">
+                        <li>
+                          <div class="circle"></div>
+                          <h4>
+                              个人博客
+                              <a href="https://github.com/xiaoyang4011/blog" target="_blank"><i class="icon-link"></i>源代码</a>
+                              <a href="https://www.7csa.com" target="_blank"><i class="icon-link"></i>Demo</a>
+                          </h4>
+                          <p>自娱自乐吧，记录下成长、</p>
+                          <img src="images/myblog.png">
+                        </li>
+                        <li>
+                          <div class="circle"></div>
+                          <h4>
+                              个人博客2.0（base on koa）
+                              <a href="https://github.com/xiaoyang4011/shawn-blog-koa" target="_blank"><i class="icon-link"></i>源代码</a>
+                              <a href="https://www.7csa.com" target="_blank"><i class="icon-link"></i>Demo</a>
+                          </h4>
+                          <p>Tech Stack：koa 2.0， mongoose（mongodb），bluebird， co， mocha， gulp个人比较欣赏standardjs的标准，
+                            so集成了gulp-standard,线上使用PM2部署，集成babel，支持Async，Await等，使用Gulp自动构建</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>
+                                discuss
+                                <a href="https://github.com/xiaoyang4011/discuss" target="_blank"><i class="icon-link"></i>源代码</a>
+                            </h4>
+                            <p>基于PHP Laravel 和 bootstrap写的社区类型的web站点</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>
+                                vuejs-notes
+                                <a href="https://github.com/xiaoyang4011/vue-test-code/tree/master/notes" target="_blank"><i class="icon-link"></i>源代码</a>
+                            </h4>
+                            <p>基于Vuejs的Notes</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>
+                                学校项目(在校期间开发的项目)（2014.12 - 2015.03）
+                            </h4>
+                            <p>业余时间学习Java Web开发，由我和一个好基友开发的</p>
+                            <ul class="efe">
+                                <li>
+                                    <h5>
+                                        就业管理系统
+                                        <a href="https://github.com/xiaoyang4011/jyxt" target="_blank"><i class="icon-link"></i>源代码</a>
+                                        <a href="http://221.2.229.26/show2/index.jsp" target="_blank"><i class="icon-link"></i>Demo</a>
+                                    </h5>
+                                    <p>14年开发，使用技术栈比较老Struts + Spring + SpringJDBC</p>
+                                    <img src="images/jyxt.png">
+                                </li>
+                                <li>
+                                    <h5>
+                                        基础科学学院网站
+                                        <a href="https://github.com/xiaoyang4011/jc" target="_blank"><i class="icon-link"></i>源代码</a>
+                                        <a href="http://221.2.229.26:8181/jckxxy/jckxxy/index.jsp" target="_blank"><i class="icon-link"></i>Demo</a>
+                                    </h5>
+                                    <p>15年初开发的，技术栈是SSH，集成基础的Auth管理 jqueryEsayUI 等</p>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>
+                                东营市爱心救助中心（上学期间帮一个爱心机构免费做的Web站）
+                                <a href="http://www.dysaxjzzx.com/" target="_blank"><i class="icon-link"></i>Demo</a>
+                            </h4>
+                            <p>ThinkPHP写的，后端采用BootStrap的模板布局，样式比较新颖，期间自己申请了个域名，走了一套备案的流程</p>
+                            <img src="images/love.png">
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <dt><i class="icon-bookmark"></i>Skill. 技能清单</dt>
+                    <h3>JS</h3>
+                    <ul class="exp">
+                        <li>
+                            <div class="circle"></div>
+                            <h4>JavaScript</h4>
+                            <p>熟悉原生Javascript，掌握关键技术点，闭包，作用域，模块化等、</p>
+                            <p>熟悉JavaScript函数式编程，喜欢精简，易读的写法，严重代码强迫症，受不了脱了裤子放屁的写法</p>
+                            <p>熟悉JavaScript设计模式</p>
+                            <p>熟悉使用ES6语法和使用babel编译</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>Nodejs</h4>
+                            <p>熟悉Node模块机制，熟悉主流异步IO流程库，熟悉node GC机制和Nodejs多线程部署等</p>
+                            <p>熟悉事件驱动，了解libuv事件循环机制</p>
+                            <p>熟悉express和koa，了解其内部差异</p>
+                            <p>熟悉使用lodash,moment,log4js,mongoose等库</p>
+                            <p>熟悉NPM命令，了解库之间的依赖关系，产品环境版本锁定问题等</p>
+                            <p>熟悉前后端流程自动化工具grunt，和 gulp</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>Vuejs</h4>
+                            <p>熟悉Vuejs 了解MVVM的数据双向绑定</p>
+                            <p>了解Vue组件之间props的数据传递和Vuex的数据传递</p>
+                        </li>
+                    </ul>
+                    <h3>语言</h3>
+                    <ul class="exp">
+                        <li>
+                            <div class="circle"></div>
+                            <h4>Java</h4>
+                            <p>熟悉Java面向对象继承封装多态，熟悉使用java的数据集合类，了解其实现原理</p>
+                            <p>熟悉Java web spring 的依赖注入，控制反转等思想</p>
+                            <p>熟悉Java多线程模型，熟悉JVM垃圾回收机制</p>
+                            <p>熟悉java maven 自动化工具，了解gradle</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>PHP</h4>
+                            <p>了解PHP基础的语法，了解PHP面向对象编程</p>
+                            <p>了解composer</p>
+                            <p>了解PHP FastCGI 和nginx FPM 工作原理</p>
+                            <p>了解Laravel 可以进行应用层开发</p>
+                        </li>
+                    </ul>
+                    <h3>系统</h3>
+                    <ul class="exp">
+                        <li>
+                            <div class="circle"></div>
+                            <h4>Mac</h4>
+                            <p>熟悉macos的的系统环境</p>
+                            <p>熟悉Mac上使用homebrew 安装软件配置环境等、</p>
+                        </li>
+                        <li>
+                            <div class="circle"></div>
+                            <h4>Linux</h4>
+                            <p>熟悉 Linux 开发环境、 Linux 服务器环境搭建部署，两年 Linux 日常使用经验</p>
+                        </li>
+                    </ul>
+                    <h3>其他</h3>
+                    <ul class="exp">
+                        <li>
+                            <p>爱折腾的人，热爱编程，热爱新技术，拥抱开源，热爱github，折腾树莓派，希望用代码改变生活</p>
+                            <p>代码洁癖 + 强迫症 受不了多一个空格少一个换行，受不了一堆废话的注释，让人看不懂的命名</p>
+                            <p>自学能力强，喜欢动手</p>
+                            <p>掌握 Vim Git 等开发工具的使用</p>
+                            <p>熟练JIRA Confluence等</p>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        <p>By Shawn 最后更新于2016年7月1日</p>
+    </footer>
+</body>
+</html>
