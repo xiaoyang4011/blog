@@ -107,8 +107,7 @@
                             <h4>云鸟管理系统</h4>
                             <p>参与 beeper 后端管理系统开发，Tech: Nodejs, Express, Mongoose, Async, Mocha等..</p>
                             <p>正式工作参加的一个项目，收获颇丰，从基本的node，git，linux、到踩过的各种爽歪歪的坑之后都有很大收获。</p>
-                            <p>大坑1: TypeError: Cannot read property 'name' of undefined，在回调函数内如果你去一个undefined里去取东西就会导致你的进程crash掉，
-                              用node写代码需谨慎。lodash 的_.get or (person && person.name)
+                            <p>大坑1(新手入门): TypeError: Cannot read property 'name' of undefined ,再或者callback was called twice。还有自己挖的 callback hell, 计算密集操作等等
                             </p>
                             <p>大坑2:之前使用的处理异步流程控制库是Seq(类似Promise的链式写法)，当一个流里有两个err 抛出来，这个库会返回两次err，
                               导致处理异常的地儿直接return了2次res 导致【Can't set headers after they are sent】,进而使进程退出，具体内容我在公司的技术分享的PPT里有</p>
